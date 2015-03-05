@@ -184,6 +184,7 @@ var ItemView = Backbone.View.extend({
 
     archive: function () {
         this.showList();
+        this.$el.hide();
 
         var type = this.$el.find('select').val();
         var now = new Date().getTime();
@@ -202,6 +203,7 @@ var ItemView = Backbone.View.extend({
 
         $.post(url, this.model.attributes, function (result) {
             //console.log(result);
+
         }, 'json');
 
         this.doLayout();
