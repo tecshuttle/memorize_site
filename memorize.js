@@ -15,7 +15,8 @@ function getCookie(objName) {//获取指定名称的cookie的值
 
 
 var devMode = window.location.href.indexOf('file') === 0 ? true : false;
-var DEVDIR = ''; // '/memorize'
+var DEVDIR = window.location.host == 'memo.zenho.com' ? '' : '/memorize';
+
 var uid = 0;
 var login_name = '';
 
@@ -28,11 +29,9 @@ if (devMode) {
     login_name = getCookie('name');
 
     if (uid !== undefined) {
-        //window.location.href = '/memorize/#!list';
-        window.location.href = '/#!list';
+        window.location.href = DEVDIR + '/#!list';
     }
 }
-
 
 //定义menu
 var Menu = Backbone.Model.extend({
