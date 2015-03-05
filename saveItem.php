@@ -37,7 +37,7 @@ $today = date('Y-m-d', time());
 $time = time();
 
 if (!empty($mtime)) {
-    $sql = "UPDATE questions SET mtime = $mtime WHERE `_id` = $id AND uid = $uid";
+    $sql = "UPDATE questions SET mtime = $mtime, sync_state = 'modify' WHERE `_id` = $id AND uid = $uid";
 } else if ($id == 0) {
     $sql = "INSERT INTO questions (uid, question, answer, `explain`, type_id, next_play_date, mtime) "
         . "VALUES ($uid, '$question', '$answer', '$explain', $type_id, '$today', $time)";
