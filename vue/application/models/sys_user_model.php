@@ -1,11 +1,12 @@
 <?php
 
-class blog_model extends CI_Model
+class sys_user_model extends CI_Model
 {
-    var $table = 'contents';
+    var $table = 'SYS_USER';
 
     function __construct()
     {
+        // Call the Model constructor
         parent::__construct();
         $this->load->database();
     }
@@ -16,7 +17,7 @@ class blog_model extends CI_Model
         $options = array_merge(array('sortDirection' => 'DESC'), $options);
 
         // Add where clauses to query
-        $qualificationArray = array();
+        $qualificationArray = array('USER_CODE');
 
         foreach ($qualificationArray as $qualifier) {
             if (isset($options[$qualifier]))
@@ -64,10 +65,9 @@ class blog_model extends CI_Model
         }
     }
 
-
     function update($option)
     {
-        $this->db->update($this->table, $option, array('cid' => $option['cid']));
+        $this->db->update($this->table, $option, array('USER_CODE' => $option['USER_CODE']));
     }
 }
 
