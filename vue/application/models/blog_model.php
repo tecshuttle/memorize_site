@@ -1,6 +1,6 @@
 <?php
 
-class todo_model extends CI_Model
+class blog_model extends CI_Model
 {
     var $table = 'todo_lists';
 
