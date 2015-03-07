@@ -15,7 +15,6 @@ function getCookie(objName) {//获取指定名称的cookie的值
 
 
 var devMode = window.location.href.indexOf('file') === 0 ? true : false;
-var DEVDIR = window.location.host == 'memo.zenho.com' ? '' : '/memorize';
 
 var uid = 0;
 var login_name = '';
@@ -29,7 +28,7 @@ if (devMode) {
     login_name = getCookie('name');
 
     if (uid !== undefined) {
-        window.location.href = DEVDIR + '/#!list';
+        window.location.href = '/#!list';
     }
 }
 
@@ -147,7 +146,7 @@ var ContentView = Backbone.View.extend({
 
         if (this.types === '') {
 
-            var url = DEVDIR + '/get_types.php';
+            var url = '/get_types.php';
             if (devMode) {
                 url = 'http://dev.tomtalk.net' + url;
             }
@@ -274,7 +273,7 @@ var ContentView = Backbone.View.extend({
         var me = this;
         me.collection.reset();
 
-        var url = DEVDIR + "/getList.php";
+        var url = "/getList.php";
         if (devMode) {
             url = "http://www.tomtalk.net" + url;
         }

@@ -190,7 +190,7 @@ var TypeView = Backbone.View.extend({
         var me = this;
         me.collection.reset();
 
-        var url = DEVDIR + '/get_type.php';
+        var url = '/get_type.php';
         if (devMode) {
             url = 'http://dev.tomtalk.net' + url;
         }

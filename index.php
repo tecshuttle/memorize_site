@@ -20,10 +20,11 @@
 
 date_default_timezone_set('Asia/Shanghai');
 
+$host = explode('.', $_SERVER['HTTP_HOST']);
 
-if ($_SERVER['HTTP_HOST'] == 'memo.zenho.com' OR $_SERVER['HTTP_HOST'] == 'blog.zenho.com') {
+if ($host[1] == 'zenho') {
     define('ENVIRONMENT', 'development');
-} else if ($_SERVER['HTTP_HOST'] == 'www.tomtalk.net') {
+} else if ($host[1] == 'tomtalk') {
     define('ENVIRONMENT', 'production');
 }
 

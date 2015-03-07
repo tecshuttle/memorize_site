@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class memo extends CI_Controller
+class memo extends MY_Controller
 {
     function __construct()
     {
@@ -12,6 +12,7 @@ class memo extends CI_Controller
     {
         $data = array(
             'title' => '别忘了',
+            'css_js_version' => $this->css_js_version,
             'css' => array(
                 '/css/bootstrap-3.1.1\css\bootstrap.min.css',
                 '/css/memo.css'
