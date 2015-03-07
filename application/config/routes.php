@@ -47,6 +47,9 @@ if ($host[0] == 'memo') {
 if ($host[0] == 'blog') {
     $r = 'vue';
 }
+if ($host[0] == 'todo') {
+    $r = 'todo';
+}
 
 
 $route['default_controller'] = $r;
