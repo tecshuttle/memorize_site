@@ -90,7 +90,7 @@
         </div>
     </footer>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/jquery-1.11.1.min.js" type="text/javascript"></script>
     <script>
     function tab(tab) {
         if (tab == 'login') {

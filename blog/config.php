@@ -9,9 +9,6 @@ $conn = mysql_connect($batchDB['host'], $batchDB['user'], $batchDB['pwd']) OR di
 mysql_select_db('tomtalk', $conn) OR die(1);
 mysql_query("set character set 'utf8'");
 
-session_start();
-
-
 //谷歌分析代码，如果不是主站的访问，不统计。
 //例如，从dev.tomtalk.net的访问，不谷歌分析统计。
 $ga = <<< ga

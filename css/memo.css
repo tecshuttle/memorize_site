@@ -30,7 +30,7 @@ li {
 }
 
 .home-slogan {
-    width: 50%;
+    width: 60%;
     height: 30%;
     float: left;
     font-size: 3em;
@@ -40,7 +40,7 @@ li {
 }
 
 .home-screen-shot {
-    width: 50%;
+    width: 60%;
     height: 30%;
     float: left;
     text-align: center;
@@ -48,14 +48,14 @@ li {
 
 .home-features {
     float: left;
-    width: 50%;
+    width: 40%;
     height: 30%;
     color: deeppink;
 }
 
 .home-download {
     float: right;
-    width: 50%;
+    width: 40%;
     height: 30%;
     font-size: 3em;
     padding: 2em;

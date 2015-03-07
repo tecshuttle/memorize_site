@@ -88,10 +88,10 @@ var UserView = Backbone.View.extend({
         });
 
         if (uid !== undefined) {
-            var logout = '<a id="logout" href="/blog/logout.php?return=/memorize">退出</a>';
+            var logout = '<a id="logout" href="/blog/logout.php?return=/">退出</a>';
             html += '<div class="login-name"><span class="glyphicon glyphicon-user"></span>' + login_name + logout + '</div>';
         } else {
-            var login = '<a href="/blog/login.php?return=/memorize">登入</a>';
+            var login = '<a href="/blog/login.php?return=/">登入</a>';
             html += '<div class="login-name"><span class="glyphicon glyphicon-user"></span>' + login + '</div>';
         }
 
