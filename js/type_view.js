@@ -110,7 +110,7 @@ var TypeItemView = Backbone.View.extend({
             devMode: devMode
         });
 
-        var url = '/memorize/saveType.php';
+        var url = '/saveType.php';
         if (devMode) {
             url = 'http://dev.tomtalk.net' + url;
         }

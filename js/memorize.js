@@ -244,9 +244,9 @@ var ContentView = Backbone.View.extend({
         html += '</ul>';
         html += '</div>';
         html += '<div class="home-screen-shot">';
-        html += '<img src="images/screen-1.jpg" />';
-        html += '<img src="images/screen-2.jpg" />';
-        html += '<img src="images/screen-3.jpg" />';
+        html += '<img src="../images/screen-1.jpg" />';
+        html += '<img src="../images/screen-2.jpg" />';
+        html += '<img src="../images/screen-3.jpg" />';
         html += '</div>';
         html += '<div class="home-download"><a href="/memorize/memorize.apk">下载 android apk</a></div>';
 

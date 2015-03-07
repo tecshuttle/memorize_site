@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class blog extends CI_Controller
+class vue extends CI_Controller
 {
     var $uid = 0;
 
@@ -24,14 +24,13 @@ class blog extends CI_Controller
             'title' => 'Blog',
             'css' => array(
                 'http://www.tomtalk.net/blog/css/bootstrap.css',
-                //'http://www.tomtalk.net/blog/css/bootstrap-responsive.css',
-                '/vue/css/blog.css'
+                '/css/blog.css'
             ),
             'js' => array(
-                '/vue/js/jquery-1.11.1.min.js',
-                '/vue/js/vue.min.js',
-                '/vue/js/marked.min.js',
-                '/vue/js/blog/blog.js'
+                '/js/jquery-1.11.1.min.js',
+                '/js/vue.min.js',
+                '/js/marked.min.js',
+                '/js/blog/blog.js'
             )
         );
 

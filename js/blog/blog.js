@@ -11,7 +11,7 @@ var contents = new Vue({
         load: function () {
             var me = this;
             $.ajax({
-                url: "blog/getList",
+                url: "vue/getList",
                 type: "POST",
                 data: {start: 0, limit: 1},
                 dataType: "json",
@@ -44,7 +44,7 @@ var contents = new Vue({
             }
 
             $.ajax({
-                url: "blog/delete",
+                url: "vue/delete",
                 type: "POST",
                 data: {
                     cid: cid
@@ -138,7 +138,7 @@ var editor = new Vue({
             blog.text = input;
 
             $.ajax({
-                url: "blog/save",
+                url: "vue/save",
                 type: "POST",
                 data: {
                     cid: cid,
@@ -156,7 +156,7 @@ var editor = new Vue({
             var input = this.input;
 
             $.ajax({
-                url: "blog/save",
+                url: "vue/save",
                 type: "POST",
                 data: {
                     cid: 0,

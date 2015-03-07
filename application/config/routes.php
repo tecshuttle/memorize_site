@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -38,7 +38,18 @@
 |
 */
 
-$route['default_controller'] = "blog";
+
+$host = explode('.', $_SERVER['HTTP_HOST']);
+
+if ($host[0] == 'memo') {
+    $r = 'memo';
+}
+if ($host[0] == 'blog') {
+    $r = 'vue';
+}
+
+
+$route['default_controller'] = $r;
 $route['404_override'] = '';
 
 

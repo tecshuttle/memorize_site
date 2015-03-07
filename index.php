@@ -20,9 +20,9 @@
 
 date_default_timezone_set('Asia/Shanghai');
 
-if ($_SERVER['HTTP_HOST'] == 'memo.zenho.com') {
+
+if ($_SERVER['HTTP_HOST'] == 'memo.zenho.com' OR $_SERVER['HTTP_HOST'] == 'blog.zenho.com') {
     define('ENVIRONMENT', 'development');
-    //define('ENVIRONMENT', 'production');
 } else if ($_SERVER['HTTP_HOST'] == 'www.tomtalk.net') {
     define('ENVIRONMENT', 'production');
 }
