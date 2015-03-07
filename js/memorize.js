@@ -368,7 +368,7 @@ var ContentView = Backbone.View.extend({
         this.counter += 1;
         var item = new Item();
         item.set({
-            question: item.get('question') + this.counter // modify item defaults
+            question: item.get('question') // + this.counter // modify item defaults
         });
 
         this.collection.unshift(item); // add item to collection; view is updated via event 'add'

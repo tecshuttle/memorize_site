@@ -3,7 +3,7 @@
 var Item = Backbone.Model.extend({
     defaults: {
         _id: 0,
-        question: '写点什么吧',
+        question: '#',
         answer: '',
         explain: '',
         priority: 0,
@@ -56,6 +56,7 @@ var ItemView = Backbone.View.extend({
         $(this.el).html(html);
         $(this.el).addClass(this.model.get('sync_state'));
         $(this.el).css('color', this.get_type_color());
+
         return this;
     },
 
@@ -87,7 +88,7 @@ var ItemView = Backbone.View.extend({
 
         _(types).each(function (item) {
             if (item.type === type) {
-                color = item.color;
+                color = '#' + item.color;
             }
         });
 
@@ -169,7 +170,7 @@ var ItemView = Backbone.View.extend({
             devMode: devMode
         });
 
-        var url = DEVDIR + '/saveItem.php';
+        var url = '/saveItem.php';
 
         if (devMode) {
             url = 'http://dev.tomtalk.net' + url;
@@ -195,7 +196,7 @@ var ItemView = Backbone.View.extend({
             devMode: devMode
         });
 
-        var url = DEVDIR + '/saveItem.php';
+        var url = '/saveItem.php';
 
         if (devMode) {
             url = 'http://dev.tomtalk.net' + url;
