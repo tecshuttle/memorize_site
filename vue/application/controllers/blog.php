@@ -49,7 +49,8 @@ class blog extends CI_Controller
 
         $option = array(
             'limit' => $per_page,
-            'offset' => ($page - 1) * $per_page
+            'offset' => ($page - 1) * $per_page,
+            'sortBy' => 'ctime'
         );
 
         $data = $this->blog_model->get($option);
@@ -63,7 +64,28 @@ class blog extends CI_Controller
         $cid = $this->input->post('cid', true);
         $text = $this->input->post('text', true);
 
+        if ($cid == 0) {
+            $this->insert($text);
+        } else {
+            $this->update($cid, $text);
+        }
+    }
+
+    public function delete()
+    {
+        $cid = $this->input->post('cid', true);
+
         $option = array(
+            'cid' => $cid
+        );
+
+        $this->blog_model->delete($option);
+    }
+
+    private function update($cid, $text)
+    {
+        $option = array(
+            'mtime' => time(),
             'cid' => $cid,
             'text' => $text
         );
@@ -71,8 +93,24 @@ class blog extends CI_Controller
         $this->blog_model->update($option);
 
         echo json_encode(array(
-            'success' => true
+            'success' => true,
+            'op' => 'update'
+        ));
+    }
 
+    private function insert($text)
+    {
+        $option = array(
+            'ctime' => time(),
+            'text' => $text
+        );
+
+        $this->blog_model->insert($option);
+
+        echo json_encode(array(
+            'success' => true,
+            'cid' => $this->db->insert_id(),
+            'op' => 'insert'
         ));
 
     }

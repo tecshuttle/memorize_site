@@ -2,7 +2,7 @@
 
 class blog_model extends CI_Model
 {
-    var $table = 'contents';
+    var $table = 'blog';
 
     function __construct()
     {
@@ -68,6 +68,16 @@ class blog_model extends CI_Model
     function update($option)
     {
         $this->db->update($this->table, $option, array('cid' => $option['cid']));
+    }
+
+    function insert($option)
+    {
+        $this->db->insert($this->table, $option);
+    }
+
+    function delete($option)
+    {
+        $this->db->delete($this->table, $option);
     }
 }
 

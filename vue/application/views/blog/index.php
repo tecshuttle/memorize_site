@@ -1,14 +1,13 @@
 <div id="contents">
-    <p v-repeat="items"
-       v-on="click: onClick"
-       class="blog-item {{active ? 'active' : ''}}">
-        {{title}}
-    </p>
+    <p v-on="click: onNew" class="blog-item" style="text-align: center;">新建blog</p>
+
+    <p v-repeat="items" v-on="click: onClick" v-text="text | title" class="blog-item {{active ? 'active' : ''}}"></p>
 </div>
 
 <div id="blog">
     <div class="blog-toolbar">
         <span v-on="click: onEdit" class="btn">编辑</span>
+        <span v-on="click: onDelete" class="btn">删除</span>
     </div>
 
     <div class="preview">
