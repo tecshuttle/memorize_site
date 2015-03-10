@@ -29,14 +29,16 @@ textarea {
 
 textarea:focus {
     box-shadow: none;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #eee;
 }
 
 #textarea-wrap {
-    padding: 1em;
-    height: 100%;
     border-right: 1px solid #eee;
-
+    border-top: 1px solid transparent;
+    position: absolute;
+    top: 2em;
+    bottom: 0em;
+    width: 50%;
 }
 
 code {
@@ -71,7 +73,7 @@ code {
     cursor: pointer;
     padding: 0.2em 1em;
     line-height: 1.5em;
-    margin: 0.2em 0em;
+    margin: 0em;
 }
 
 .blog-item:hover {
@@ -86,7 +88,7 @@ code {
     display: none;
     float: left;
     width: 65%;
-    margin-top: 0.5em;
+
     height: 100%;
     overflow: auto;
 }
@@ -95,9 +97,7 @@ code {
     display: none;
     float: left;
     width: 100%;
-    margin-top: 2em;
     height: 100%;
-
 }
 
 .blog-preview {
@@ -106,10 +106,12 @@ code {
 }
 
 .edit-preview {
-    height: 100%;
     width: 50%;
     overflow: auto;
-    float: left;
+    position: absolute;
+    left: 50%;
+    top: 2em;
+    bottom: 0em;
 }
 
 .blog-content {
