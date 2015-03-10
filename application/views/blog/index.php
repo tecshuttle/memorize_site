@@ -25,11 +25,11 @@
         <span v-on="click: onSave" class="btn">保存</span>
     </div>
 
-    <div id="textarea">
-        <div id="textarea-wrap">
-            <textarea v-model="input" class="form-control"></textarea>
-        </div>
+
+    <div id="textarea-wrap">
+        <textarea v-model="input" class="form-control"></textarea>
     </div>
+
 
     <div class="edit-preview">
         <div v-html="input | marked" class="blog-content"></div>
