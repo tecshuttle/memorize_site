@@ -138,7 +138,7 @@
 </div>
 </body>
 
-<script src="/js/jquery-1.10.2.js"></script>
+<script src="/js/jquery-1.11.1.min.js"></script>
 <script src="/js/jquery-ui-1.11.1.js"></script>
 <script src="/js/jquery.ui.touch-punch.min.js"></script>
 <script src="/css/bootstrap-3.1.1/js/bootstrap.min.js"></script>
