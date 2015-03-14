@@ -53,6 +53,7 @@ var contents = new Vue({
 
 
                     $.each(result.data, function (i, item) {
+                        item.saved = true;
                         me.items.push(item);
                     });
 
@@ -177,6 +178,8 @@ var editor = new Vue({
             blog.vue.$set('text', input);
             blog.text = input;
 
+            blog.vue.saved = false;    //设置保存状态
+
             $.ajax({
                 url: "vue/save",
                 type: "POST",
@@ -186,7 +189,7 @@ var editor = new Vue({
                 },
                 dataType: "json",
                 success: function (result) {
-
+                    blog.vue.saved = true;  //取消保存状态
                 }
             });
 
@@ -206,7 +209,8 @@ var editor = new Vue({
                 success: function (result) {
                     contents.items.unshift({
                         cid: result.cid,
-                        text: input
+                        text: input,
+                        saved: true
                     });
                 }
             });

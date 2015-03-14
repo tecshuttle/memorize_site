@@ -90,6 +90,10 @@ code {
     border-bottom: 1px solid #eee;
 }
 
+p.saving {
+    background-color: #FFD2D2;
+}
+
 .blog-item:hover {
     background-color: #EEE;
 }

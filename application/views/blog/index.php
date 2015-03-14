@@ -3,7 +3,7 @@
         <p v-on="click: onNew" class="blog-item" style="text-align: center;">新建blog</p>
 
         <p v-repeat="items" v-on="click: onClick" v-text="text | title"
-           class="blog-item {{active ? 'active' : ''}}"></p>
+           class="blog-item {{active ? 'active' : ''}} {{saved ? '' : 'saving'}}"></p>
 
         <p class="blog-item" id="load-mark">{{loadAll ? 'done' : 'loading...'}}</p>
     </div>
