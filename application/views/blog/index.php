@@ -4,13 +4,20 @@
 
         <p v-repeat="items" v-on="click: onClick" v-text="text | title"
            class="blog-item {{active ? 'active' : ''}}"></p>
+
+        <p class="blog-item" id="load-mark">{{loadAll ? 'done' : 'loading...'}}</p>
     </div>
 </div>
 
 <div id="blog">
     <div class="blog-toolbar">
-        <span v-on="click: onEdit" class="btn">编辑</span>
-        <span v-on="click: onDelete" class="btn">删除</span>
+        <span v-on="click: onEdit" class="btn">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </span>
+
+        <span v-on="click: onDelete" class="btn">
+            <span class="glyphicon glyphicon-trash"></span>
+        </span>
     </div>
 
     <div class="blog-preview">
@@ -21,8 +28,14 @@
 
 <div id="editor">
     <div class="edit-toolbar">
-        <span v-on="click: onCancel" class="btn">返回</span>
-        <span v-on="click: onSave" class="btn">保存</span>
+        <span v-on="click: onCancel" class="btn">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+        </span>
+
+
+        <span v-on="click: onSave" class="btn">
+            <span class="glyphicon glyphicon-ok"></span>
+        </span>
     </div>
 
 

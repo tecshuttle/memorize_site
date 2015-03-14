@@ -14,8 +14,11 @@ html, body, textarea, #editor {
     float: left;
 }
 
-textarea {
+#textarea-wrap textarea {
     width: 100%;
+
+    height: 100%;
+    font-size: 1em;
     border: none;
     resize: none;
     outline: none;
@@ -49,6 +52,13 @@ code {
 
 .blog-toolbar {
     text-align: left;
+    padding-left: 1em;
+    border-bottom: 1px solid #eee;
+    position: absolute;
+    width: 65%;
+    left: 35%;
+    background-color: #fff;
+    z-index: 1;
 }
 
 .edit-toolbar {
@@ -67,15 +77,17 @@ code {
 }
 
 #contents-list {
-    border-right: 1px solid #eee;
+    border-right: 1px solid #ccc;
     height: 100%;
+    overflow: auto;
 }
 
 .blog-item {
     cursor: pointer;
     padding: 0.2em 1em;
-    line-height: 1.5em;
+    line-height: 1.8em;
     margin: 0em;
+    border-bottom: 1px solid #eee;
 }
 
 .blog-item:hover {
@@ -88,11 +100,6 @@ code {
 
 #blog {
     display: none;
-    float: left;
-    width: 65%;
-
-    height: 100%;
-    overflow: auto;
 }
 
 #editor {
@@ -105,6 +112,11 @@ code {
 .blog-preview {
     overflow: auto;
     float: left;
+    position: absolute;
+    top: 2em;
+    bottom: 0em;
+    right: 0em;
+    left: 35%;
 }
 
 .edit-preview {
@@ -117,7 +129,7 @@ code {
 }
 
 .blog-content {
-    max-width: 40em;
+    max-width: 50em;
     padding: 0 1em;
 }
 

@@ -23,7 +23,7 @@ class vue extends CI_Controller
         $data = array(
             'title' => 'Blog',
             'css' => array(
-                'http://www.tomtalk.net/blog/css/bootstrap.css',
+                '/css/bootstrap-3.1.1/css/bootstrap.min.css',
                 '/css/blog.css'
             ),
             'js' => array(
@@ -41,16 +41,16 @@ class vue extends CI_Controller
 
     public function getList()
     {
-        $page = $this->input->get('page', true);
-
-        $page = ($page ? $page : 1);
-        $per_page = 10;
+        $start = $this->input->post('start', true);
+        $limit = $this->input->post('limit', true);
 
         $option = array(
-            'limit' => $per_page,
-            'offset' => ($page - 1) * $per_page,
+            'limit' => $limit,
+            'offset' => $start,
             'sortBy' => 'ctime'
         );
+
+        //var_dump($option);
 
         $data = $this->blog_model->get($option);
 

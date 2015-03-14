@@ -52,8 +52,6 @@ class blog_model extends CI_Model
 
         $query = $this->db->get($this->table);
 
-        if ($query->num_rows() == 0) return false;
-
         if (isset($options['USER_CODE'])) {
             return $query->row(0);
         } else {

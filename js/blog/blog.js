@@ -5,28 +5,68 @@ Vue.filter('title', function (blog) {
 var contents = new Vue({
     el: '#contents',
     data: {
+        loading: false,
+        loadAll: false,
         items: []
+    },
+    created: function () {
+        var me = this;
+
+        this.$watch('items', function () {
+            var mark_pos = $("#load-mark").position();
+            var win_height = $(window).height();
+
+            if (mark_pos.top < win_height) {
+                this.load();
+            }
+        })
+
+        $('#contents-list').scroll(function () {
+            var mark_pos = $("#load-mark").position();
+            var win_height = $(window).height();
+
+            if (mark_pos.top < win_height) {
+                if (!me.loading) {
+                    me.load();
+                }
+            }
+        });
     },
     methods: {
         load: function () {
             var me = this;
+
+            if (me.loadAll) return;
+
+            me.loading = true;
+
             $.ajax({
                 url: "vue/getList",
                 type: "POST",
-                data: {start: 0, limit: 1},
+                data: {
+                    start: me.items.length,
+                    limit: 10
+                },
                 dataType: "json",
                 success: function (result) {
-                    var items = [];
+                    console.log();
+
 
                     $.each(result.data, function (i, item) {
-                        items.push(item);
+                        me.items.push(item);
                     });
 
-                    me.items = items;
+                    me.loading = false;
+
+                    if (result.data.length == 0) {
+                        me.loadAll = true;
+                    }
                 }
             });
         },
+
         onClick: function (e) {
+            console.log($("#load-mark").is(":visible"));
             blog.load(e.target.__vue__);
         },
 
