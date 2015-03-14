@@ -170,7 +170,7 @@ class todo extends CI_Controller
 
         $data = array(
             'user_id' => $this->uid,
-            'job_name' => '新任务',
+            'job_name' => '#',
             'start_time' => $start_time,
             'time_long' => 60 * 60 //任务耗时默认1小时
         );
