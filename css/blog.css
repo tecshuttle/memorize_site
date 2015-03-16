@@ -7,7 +7,7 @@ html, body, textarea, #editor {
 }
 
 img {
-    width: 100%;
+    max-width: 100%;
 }
 
 #textarea {
