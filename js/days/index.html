@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days</title>
+    <style>
+        body {
+            font-size: 16px;
+            width: 100%;
+            margin: 1rem;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        .completed {
+            color: red;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a.active {
+            color: red;
+        }
+
+        #category-list p {
+            line-height: 26px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<script type="text/x-handlebars" id="application">
+{{outlet}}
+</script>
+
+<script type="text/x-handlebars" id="index">
+    <br/>
+    {{#each item in model itemController="index"}}
+      <div {{bind-attr class="item.isEdit:completed"}}>
+          <span>{{item.date}}</span>
+          {{# if item.isEdit}}
+            {{ input type="text" value=item.feat }}
+            <button  {{action 'save'}}>Save</button>
+          {{else}}
+            <span {{action "click"}}>{{item.feat}}</span>
+          {{/if}}
+      </div>
+    {{/each}}
+</script>
+
+<!-- jquery2，在微信中出不来页面，所以用低版本jquery -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/ember/libs/handlebars-v2.0.0.js"></script>
+<script src="/js/ember/libs/ember.min.js"></script>
+<script src="/js/ember/libs/ember-data.js"></script>
+<script src="/js/days/days.js"></script>
+</body>
+</html>
