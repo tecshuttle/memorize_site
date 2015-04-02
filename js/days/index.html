@@ -38,15 +38,15 @@
 <body>
 
 
-<script type="text/x-handlebars" id="application">
+<script type="text/x-handlebars" data-template-name="application">
 {{outlet}}
 </script>
 
-<script type="text/x-handlebars" id="index">
+<script type="text/x-handlebars" data-template-name="index">
     <br/>
     {{#each item in model itemController="index"}}
       <div {{bind-attr class="item.isEdit:completed"}}>
-          <span>{{item.date}}</span>
+          <span>{{item.color}}</span>
           {{# if item.isEdit}}
             {{ input type="text" value=item.feat }}
             <button  {{action 'save'}}>Save</button>
@@ -57,9 +57,13 @@
     {{/each}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="detail">
+    detail
+</script>
+
 <!-- jquery2，在微信中出不来页面，所以用低版本jquery -->
 <script src="/js/jquery.min.js"></script>
-<script src="/js/ember/libs/handlebars-v2.0.0.js"></script>
+<script src="/js/ember/libs/ember-template-compiler.js"></script>
 <script src="/js/ember/libs/ember.min.js"></script>
 <script src="/js/ember/libs/ember-data.js"></script>
 <script src="/js/days/days.js"></script>

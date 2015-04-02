@@ -1,48 +1,48 @@
 App = Ember.Application.create({
-    //LOG_TRANSITIONS: true,
-    //LOG_TRANSITIONS_INTERNAL: true
+    LOG_TRANSITIONS: true,
+    LOG_TRANSITIONS_INTERNAL: true
+});
+
+App.ApplicationView = Ember.View.extend({
+    templateName: 'application'
 });
 
 
-App.ApplicationAdapter = DS.FixtureAdapter.extend();
+App.Router.map(function() {
+    this.route("index", {path: "/"});
+    this.route("detail", {path: "/detail"});
+});
+
+App.ApplicationAdapter = DS.RESTAdapter.extend({
+    host: '/days/update'
+});
 
 App.IndexRoute = Ember.Route.extend({
     model: function () {
-        return this.store.find('day');
+        return Ember.$.getJSON('/days').then(function (data) {
+            return data;
+        });
     }
 });
 
 App.Day = DS.Model.extend({
     date: DS.attr('string'),
-    feat: DS.attr('string'),
-    isEdit: DS.attr('boolean')
+    feat: DS.attr('string')
 });
 
-App.Day.FIXTURES = [
-    {
-        id: 1,
-        date: '23',
-        feat: 'Learn Ember.js',
-        isEdit: true
-    },
-    {
-        id: 2,
-        date: '24',
-        feat: 'Make a Sample',
-        isEdit: false
-    },
-    {
-        id: 3,
-        date: '25',
-        feat: 'Profit!',
-        isEdit: false
-    }
-];
 
 App.IndexController = Ember.ObjectController.extend({
     actions: {
         save: function () {
-            this.set('isEdit', false)
+            this.set('isEdit', false);
+
+
+            var post = this.store.createRecord('day', {
+                date: 123,
+                feat: 'Lorem ipsum'
+            });
+
+            post.save();
         },
         click: function () {
             this.set('isEdit', true);
