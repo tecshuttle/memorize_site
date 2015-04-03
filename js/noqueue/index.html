@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Days</title>
+    <title>不排队 - 半路店</title>
     <style>
         body {
             font-size: 16px;
@@ -81,11 +81,12 @@
 
 
 <script type="text/x-handlebars" data-template-name="application">
-<div class="shop_name">半路店</div>
 {{outlet}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="index">
+    <div class="shop_name">请选择餐品</div>
+
     <div class="shop_item" {{action "click"}}>
         <div class="photo"><img src="/images/noodle.jpg"></div>
         <div class="info">
@@ -96,14 +97,16 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="detail">
-    <div class="bill">
+    <div class="shop_name">您的用餐单</div>
+
+    <div class="bill" {{action "click"}}>
         <div>餐品：拌米粉</div>
         <div>售价：￥7.00</div>
         <div>餐牌：73</div>
-    </div>
 
-    <div class="tips">
-        您的早餐准备大约用时7分钟，请您适时就餐。
+        <div class="tips">
+            您的早餐准备大约用时7分钟，请您适时就餐。
+        </div>
     </div>
 </script>
 

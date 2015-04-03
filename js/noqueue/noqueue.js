@@ -20,3 +20,11 @@ App.IndexController = Ember.ObjectController.extend({
         }
     }
 });
+
+App.DetailController = Ember.ObjectController.extend({
+    actions: {
+        click: function () {
+            this.transitionToRoute('index');
+        }
+    }
+});
