@@ -13,10 +13,10 @@ class days_model extends CI_Model
     //查询，统后用这个方法
     function get($options = array())
     {
-        $options = array_merge(array('time' => 'DESC'), $options);
+        $options = array_merge(array('sortDirection' => 'DESC'), $options);
 
         // Add where clauses to query
-        $qualificationArray = array('id');
+        $qualificationArray = array('id', 'time');
 
         foreach ($qualificationArray as $qualifier) {
             if (isset($options[$qualifier]))
@@ -58,11 +58,27 @@ class days_model extends CI_Model
         );
     }
 
+    //查询，统后用这个方法
+    function get_days($options = array())
+    {
+        $this->db->where('time >=',  $options['time']);
+        $this->db->order_by('time', 'ASC');
+        $this->db->limit(7);
+
+        $query = $this->db->get($this->table);
+
+        return $query->result();
+    }
+
     function update($option)
     {
         $this->db->update($this->table, $option, array('id' => $option['id']));
     }
 
+    function insert($data)
+    {
+        $this->db->insert($this->table, $data);
+    }
 
 }
 

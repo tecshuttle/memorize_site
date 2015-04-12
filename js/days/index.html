@@ -7,8 +7,8 @@
     <style>
         body {
             font-size: 16px;
-            width: 100%;
-            margin: 1rem;
+            margin: 0;
+            font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
         }
 
         p {
@@ -32,6 +32,56 @@
             margin: 0 auto;
         }
 
+        .day {
+            clear: both;
+            margin: 1em 0em;
+        }
+
+        .time {
+            color: #ff1493;
+        }
+
+        .feat {
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            clear: both;
+            font-size: 16px;
+            border: none;
+            resize: none;
+            padding: 0;
+            margin: 0;
+            font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
+        }
+
+        .menu-bar {
+            border-bottom: 1px solid #EEEEEE;
+            padding: 0.4em 0em;
+        }
+
+        .btn {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .pre-btn {
+            width: 20%;
+            display: inline-block;
+        }
+
+        .current-month {
+            display: inline-block;
+            text-align: center;
+            width: 50%;
+        }
+
+        .next-btn {
+            width: 20%;
+            display: inline-block;
+        }
+
     </style>
 </head>
 
@@ -43,22 +93,30 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="index">
-    <br/>
-    {{#each item in model itemController="index"}}
-      <div {{bind-attr class="item.isEdit:completed"}}>
-          <span>{{item.color}}</span>
-          {{# if item.isEdit}}
-            {{ input type="text" value=item.feat }}
-            <button  {{action 'save'}}>Save</button>
-          {{else}}
-            <span {{action "click"}}>{{item.feat}}</span>
-          {{/if}}
+    <div class="menu-bar">
+        <span class='btn pre-btn'>Pre</span>
+        <span class='current-month'>2015-04</span>
+        <span class='btn next-btn'>Next</span>
+    </div>
+
+    {{#each item in model itemController="item"}}
+      <div class="day">
+        <div class="time">{{formatDate item.time}}</div>
+            <div class="feat" {{action 'click'}}>
+                {{#if item.feat}}
+                   {{{toHtml item.feat}}}
+                {{else}}
+                    &nbsp;
+                {{/if}}
+            </div>
       </div>
     {{/each}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="detail">
-    detail
+    {{textarea class="feat"value=feat}}
+    <button  {{action 'cancel'}}>Cancel</button>
+    <button  {{action 'save'}}>Save</button>
 </script>
 
 <!-- jquery2，在微信中出不来页面，所以用低版本jquery -->
@@ -66,6 +124,8 @@
 <script src="/js/ember/libs/ember-template-compiler.js"></script>
 <script src="/js/ember/libs/ember.min.js"></script>
 <script src="/js/ember/libs/ember-data.js"></script>
+<script src="/js/jquery.autosize.min.js"></script>
+<script src="/js/moment.js"></script>
 <script src="/js/days/days.js"></script>
 </body>
 </html>
