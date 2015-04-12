@@ -6,30 +6,13 @@
     <title>Days</title>
     <style>
         body {
-            font-size: 16px;
+            font-size: 14pt;
             margin: 0;
             font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
         }
 
         p {
-            font-size: 16px;
-        }
-
-        .completed {
-            color: red;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        a.active {
-            color: red;
-        }
-
-        #category-list p {
-            line-height: 26px;
-            margin: 0 auto;
+            font-size: 14pt;
         }
 
         .day {
@@ -45,14 +28,17 @@
             cursor: pointer;
         }
 
-        textarea {
+        #feat-textarea {
             width: 100%;
             clear: both;
-            font-size: 16px;
+            font-size: 14pt;
             border: none;
             resize: none;
             padding: 0;
             margin: 0;
+            box-shadow: none;
+            border-radius: 0px;
+            outline: none;
             font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
         }
 
@@ -64,6 +50,7 @@
         .btn {
             text-align: center;
             cursor: pointer;
+            color:#08c;
         }
 
         .pre-btn {
@@ -83,6 +70,17 @@
         }
         .edit-container {
             margin: 0.5em 0.5em;
+        }
+
+        .cancel {
+            width: 50%;
+            display: inline-block;
+
+        }
+        .save {
+            width: 50%;
+            display: inline-block;
+            float: right;
         }
 
     </style>
@@ -117,10 +115,13 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="detail">
+    <div class="menu-bar">
+        <span class="btn cancel" {{action 'cancel'}}>Cancel</span>
+        <span class="btn save" {{action 'save'}}>Save</span>
+    </div>
+
     <div class="edit-container">
-        {{textarea class="feat"value=feat}}
-        <button  {{action 'cancel'}}>Cancel</button>
-        <button  {{action 'save'}}>Save</button>
+        {{textarea id="feat-textarea" value=feat}}
     </div>
 </script>
 
@@ -130,6 +131,7 @@
 <script src="/js/ember/libs/ember.min.js"></script>
 <script src="/js/ember/libs/ember-data.js"></script>
 <script src="/js/jquery.autosize.min.js"></script>
+<script src="/js/bounce.min.js"></script>
 <script src="/js/moment.js"></script>
 <script src="/js/fastclick.js"></script>
 <script src="/js/days/days.js"></script>
