@@ -25,6 +25,18 @@ Ember.Handlebars.helper('getWeek', function (time) {
     return week[e];
 });
 
+Ember.Handlebars.helper('getTimeClass', function (time) {
+    var date = new Date(time * 1000);
+
+    var e = moment(date).format('e');
+
+    if (e == 0 || e == 6) {
+        return 'time-sunday';
+    } else {
+        return 'time-work';
+    }
+});
+
 Ember.Handlebars.helper('toHtml', function (feat) {
     return feat ? feat.replace(/\n/g, "<br/>") : '';
 });

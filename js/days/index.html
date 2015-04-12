@@ -6,25 +6,30 @@
     <title>Days</title>
     <style>
         body {
-            font-size: 14pt;
+            font-size: 12pt;
+            line-height:1.5em;
             margin: 0;
             color: #333;
             font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
         }
 
-        p {
-            font-size: 14pt;
-        }
-
         .day {
             clear: both;
-            padding: 0.5em 0.5em;
+            padding: 0.5em 1em;
             border-bottom: 1pt solid #EEEEEE;
             cursor: pointer;
         }
 
-        .time {
-            color: #ff1493;
+        .time-work {
+            color: #fc880f;
+            font-size: 10pt;
+            font-weight: bold;
+        }
+
+        .time-sunday {
+            color: #96d678;
+            font-size: 10pt;
+            font-weight: bold;
         }
 
         .item-date {
@@ -41,7 +46,8 @@
         #feat-textarea {
             width: 100%;
             clear: both;
-            font-size: 14pt;
+            font-size: 12pt;
+            line-height:1.5em;
             border: none;
             resize: none;
             padding: 0;
@@ -49,6 +55,7 @@
             box-shadow: none;
             border-radius: 0px;
             outline: none;
+            color: #333;
             font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
         }
 
@@ -90,7 +97,6 @@
         .save {
             width: 49%;
             display: inline-block;
-            float: right;
         }
 
     </style>
@@ -105,21 +111,19 @@
 
 <script type="text/x-handlebars" data-template-name="index">
     <div class="menu-bar">
-        <span class='btn pre-btn'>Pre</span>
+        <span class='btn pre-btn'>上星期</span>
         <span class='current-month'>2015-04</span>
-        <span class='btn next-btn'>Next</span>
+        <span class='btn next-btn'>下星期</span>
     </div>
 
     {{#each item in model itemController="item"}}
       <div class="day" {{action 'click'}}>
-        <div class="time">
+        <div class="{{getTimeClass item.time}}">
             <span class="item-date">{{getDate item.time}}</span> {{getWeek item.time}}
         </div>
 
         <div class="feat">
-
-               {{{toHtml item.feat}}}
-
+           {{{toHtml item.feat}}}
         </div>
       </div>
     {{/each}}
@@ -127,8 +131,8 @@
 
 <script type="text/x-handlebars" data-template-name="detail">
     <div class="menu-bar">
-        <span class="btn cancel" {{action 'cancel'}}>Cancel</span>
-        <span class="btn save" {{action 'save'}}>Save</span>
+        <span class="btn cancel" {{action 'cancel'}}>取消</span>
+        <span class="btn save" {{action 'save'}}>保存</span>
     </div>
 
     <div class="edit-container">
