@@ -2,9 +2,6 @@ $(function () {
     FastClick.attach(document.body);
 });
 
-var bounce_forward = new Bounce();
-var bounce_return = new Bounce();
-
 Ember.Handlebars.helper('getDate', function (time) {
     var date = new Date(time * 1000);
 
@@ -81,6 +78,7 @@ App.IndexView = Ember.View.extend({
         var view = this;
         var $view = this.$();
 
+        var bounce_return = new Bounce();
         bounce_return.translate({
             from: { x: -($(window).width()), y: 0 },
             to: { x: 0, y: 0 },
@@ -89,7 +87,9 @@ App.IndexView = Ember.View.extend({
             stiffness: 5
         });
 
-        bounce_return.applyTo($view);
+        bounce_return.applyTo($view).then(function() {
+            bounce_return.remove();
+        });
     },
     willDestroyElement: function () {
         //console.log('destroy');
@@ -114,6 +114,7 @@ App.DetailView = Ember.View.extend({
         var view = this;
         var $view = this.$();
 
+        var bounce_forward = new Bounce();
         bounce_forward.translate({
             from: { x: ($(window).width()), y: 0 },
             to: { x: 0, y: 0 },
@@ -122,7 +123,9 @@ App.DetailView = Ember.View.extend({
             stiffness: 5
         });
 
-        bounce_forward.applyTo($view);
+        bounce_forward.applyTo($view).then(function() {
+            bounce_forward.remove();
+        });
     },
     willDestroyElement: function () {
         //console.log('destroy');
