@@ -34,7 +34,7 @@
 
         .day {
             clear: both;
-            margin: 1em 0em;
+            margin: 0.5em 0.5em;
         }
 
         .time {
@@ -81,6 +81,9 @@
             width: 20%;
             display: inline-block;
         }
+        .edit-container {
+            margin: 0.5em 0.5em;
+        }
 
     </style>
 </head>
@@ -114,9 +117,11 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="detail">
-    {{textarea class="feat"value=feat}}
-    <button  {{action 'cancel'}}>Cancel</button>
-    <button  {{action 'save'}}>Save</button>
+    <div class="edit-container">
+        {{textarea class="feat"value=feat}}
+        <button  {{action 'cancel'}}>Cancel</button>
+        <button  {{action 'save'}}>Save</button>
+    </div>
 </script>
 
 <!-- jquery2，在微信中出不来页面，所以用低版本jquery -->
@@ -126,6 +131,7 @@
 <script src="/js/ember/libs/ember-data.js"></script>
 <script src="/js/jquery.autosize.min.js"></script>
 <script src="/js/moment.js"></script>
+<script src="/js/fastclick.js"></script>
 <script src="/js/days/days.js"></script>
 </body>
 </html>

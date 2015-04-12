@@ -1,3 +1,7 @@
+$(function () {
+    FastClick.attach(document.body);
+});
+
 Ember.Handlebars.helper('formatDate', function (time) {
     var date = new Date(time * 1000);
 
