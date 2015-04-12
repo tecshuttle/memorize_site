@@ -8,6 +8,7 @@
         body {
             font-size: 14pt;
             margin: 0;
+            color: #333;
             font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
         }
 
@@ -17,15 +18,24 @@
 
         .day {
             clear: both;
-            margin: 0.5em 0.5em;
+            padding: 0.5em 0.5em;
+            border-bottom: 1pt solid #EEEEEE;
+            cursor: pointer;
         }
 
         .time {
             color: #ff1493;
         }
 
+        .item-date {
+            display: inline-block;
+            width: 2ex;
+            text-align: center;
+            margin-right: 1em;
+        }
+
         .feat {
-            cursor: pointer;
+
         }
 
         #feat-textarea {
@@ -43,18 +53,18 @@
         }
 
         .menu-bar {
-            border-bottom: 1px solid #EEEEEE;
+            border-bottom: 1pt solid #DDDDDD;
             padding: 0.4em 0em;
         }
 
         .btn {
             text-align: center;
             cursor: pointer;
-            color:#08c;
+            color: #0579fd;
         }
 
         .pre-btn {
-            width: 20%;
+            width: 23%;
             display: inline-block;
         }
 
@@ -65,7 +75,7 @@
         }
 
         .next-btn {
-            width: 20%;
+            width: 23%;
             display: inline-block;
         }
         .edit-container {
@@ -73,12 +83,12 @@
         }
 
         .cancel {
-            width: 50%;
+            width: 49%;
             display: inline-block;
 
         }
         .save {
-            width: 50%;
+            width: 49%;
             display: inline-block;
             float: right;
         }
@@ -101,15 +111,16 @@
     </div>
 
     {{#each item in model itemController="item"}}
-      <div class="day">
-        <div class="time">{{formatDate item.time}}</div>
-            <div class="feat" {{action 'click'}}>
-                {{#if item.feat}}
-                   {{{toHtml item.feat}}}
-                {{else}}
-                    &nbsp;
-                {{/if}}
-            </div>
+      <div class="day" {{action 'click'}}>
+        <div class="time">
+            <span class="item-date">{{getDate item.time}}</span> {{getWeek item.time}}
+        </div>
+
+        <div class="feat">
+
+               {{{toHtml item.feat}}}
+
+        </div>
       </div>
     {{/each}}
 </script>

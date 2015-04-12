@@ -5,7 +5,7 @@ $(function () {
 var bounce_forward = new Bounce();
 var bounce_return = new Bounce();
 
-Ember.Handlebars.helper('formatDate', function (time) {
+Ember.Handlebars.helper('getDate', function (time) {
     var date = new Date(time * 1000);
 
     if (moment(date).format('D') == '1') {
@@ -15,8 +15,18 @@ Ember.Handlebars.helper('formatDate', function (time) {
     }
 });
 
+Ember.Handlebars.helper('getWeek', function (time) {
+    var date = new Date(time * 1000);
+
+    var e = moment(date).format('e');
+
+    var week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+    return week[e];
+});
+
 Ember.Handlebars.helper('toHtml', function (feat) {
-    return feat.replace(/\n/g, "<br/>");
+    return feat ? feat.replace(/\n/g, "<br/>") : '';
 });
 
 App = Ember.Application.create({
