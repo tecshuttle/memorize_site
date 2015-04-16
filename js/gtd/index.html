@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTD</title>
+    <link rel="stylesheet" href="/css/bootstrap-3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/js/gtd/gtd.css"/>
 </head>
 
@@ -47,8 +48,8 @@
     <div id="job-list">
         {{#each item in model}}
             <li class="job">
-                <span class="drag-handle">MMM&#9776;</span>
                 <span {{action "click" item}}>{{item.job_name}}</span>
+                <span class="glyphicon glyphicon-minus drag-handle"></span>
             </li>
         {{/each}}
     </div>
