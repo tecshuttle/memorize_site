@@ -1,17 +1,3 @@
-function getView(name) {
-    var template = '';
-    $.ajax({
-        url: '/js/ember/' + name + '.html',
-        async: false,
-        success: function (text) {
-            template = text;
-        }
-    });
-
-    return Ember.Handlebars.compile(template);
-};
-
-
 App = Ember.Application.create({
     //LOG_TRANSITIONS: true,
     //LOG_TRANSITIONS_INTERNAL: true
@@ -30,13 +16,20 @@ App.Model.reopenClass({
 
         var collection = this;
         var item = null;
-        $.getJSON(url, function (data) {
-            $.each(data, function (i, row) {
-                item = type.create();
-                item.setProperties(row);
-                item.set('isLoaded', true);
-                Ember.get(type, 'collection').pushObject(item);
-            });
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {day: '2015-04-16'},
+            dataType: "json",
+            success: function (res, status, xhr) {
+                $.each(res, function (i, row) {
+                    item = type.create();
+                    item.setProperties(row);
+                    item.set('isLoaded', true);
+                    Ember.get(type, 'collection').pushObject(item);
+                });
+            }
         });
 
         return Ember.get(type, 'collection');
@@ -44,16 +37,6 @@ App.Model.reopenClass({
     updateRecord: function (url, type, model) {
         var collection = this;
         var data = JSON.parse(JSON.stringify(model));
-
-        //为配合接口，整理一下数据
-        data.sync_state = 'modify';
-        data.devMode = true; //开发模式，不用判断cookie
-        data.type_name = data.name;
-        data._id = data.id;
-
-        delete data.isLoaded;
-        delete data.name;
-        delete data.id;
 
         $.ajax({
             url: url,
@@ -76,25 +59,43 @@ App.Model.reopenClass({
 });
 
 App.ApplicationView = Ember.View.extend({
-    template: getView('application')
+    templateName: 'application'
 });
+
+App.CatIndexView = Ember.View.extend({
+    templateName: 'cat/index',
+    didInsertElement: function () {
+        var view = this;
+        var $view = this.$();
+
+        var byId = function (id) {
+            return document.getElementById(id);
+        };
+
+        Sortable.create(byId('job-list'), {
+            animation: 150,
+            handle: '.drag-handle'
+        });
+
+
+        console.log('insert');
+    },
+    willDestroyElement: function () {
+        console.log('destroy');
+    }
+});
+
 
 App.Router.map(function () {
     this.resource('index', { path: '/' });
-    this.resource('list', { path: '/list' });
+    this.resource('month', { path: '/month' });
 
     this.resource('cat', { path: '/cat' }, function () {
-        this.route("edit", {path: '/edit/:id'});
+        //this.route("edit", {path: '/edit/:id'});
     });
 
-    this.resource('tag', { path: '/tag' });
-
-    this.resource('memo', { path: '/memo' }, function () {
-        this.route("edit", {path: '/edit'});
+    this.resource('edit', { path: '/edit/:edit_id' }, function () {
     });
-
-    this.resource('blog', { path: '/blog' });
-    this.resource('book', { path: '/book' });
 });
 
 App.Todo = DS.Model.extend({
@@ -139,46 +140,18 @@ App.IndexController = Ember.ArrayController.extend({
 
         click: function (item) {
             item.set('isCompleted', item.get('isCompleted') ? false : true);
-
-            //item.deleteRecord();
-
-            //$.each(no, function (i, item) {
-            //item.set('isCompleted', true);
-            //item.deleteRecord();
-            //});
         }
     }
 });
-
-
-App.ListController = Ember.Controller.extend({
-    actions: {
-        pClick: function (a, b, c) {
-            console.log(this);
-        },
-        btnClick: function (a, b, c) {
-            console.log(this);
-        }
-    }
-});
-
-App.MemoIndexController = Ember.Controller.extend({
-    actions: {
-        click: function (a, b, c) {
-            console.log(this);
-        }
-    }
-});
-
 
 App.ApplicationAdapter = DS.FixtureAdapter.extend();
-
 
 App.IndexRoute = Ember.Route.extend({
     model: function () {
         return this.store.find('todo');
     }
 });
+
 
 
 
