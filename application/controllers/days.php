@@ -34,7 +34,10 @@ class days extends CI_Controller
     {
         $this->days_model->update($_POST);
 
-        echo 'ok';
+        echo json_encode(array(
+            'success' => true,
+            'op' => 'update'
+        ));
     }
 
     function insert()

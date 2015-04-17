@@ -43,6 +43,61 @@ App = Ember.Application.create({
     //LOG_TRANSITIONS_INTERNAL: true
 });
 
+//Model定义
+App.Model = Ember.Object.extend();
+
+App.Model.reopenClass({
+    find: function (id, type) {
+        var item = type.collection.findBy('id', id);
+        return item;
+    },
+    findAll: function (url, type, key) {
+        if (type.collection.length > 0) return;  //如果有数据，就不加载数据了。
+
+        var collection = this;
+        var item = null;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {day: '2015-04-16'},
+            dataType: "json",
+            success: function (res, status, xhr) {
+                $.each(res, function (i, row) {
+                    item = type.create();
+                    item.setProperties(row);
+                    item.set('isLoaded', true);
+                    Ember.get(type, 'collection').pushObject(item);
+                });
+            }
+        });
+
+        return Ember.get(type, 'collection');
+    },
+    updateRecord: function (url, type, model) {
+        var collection = this;
+        var data = JSON.parse(JSON.stringify(model));
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            dataType: "json",
+            success: function (res, status, xhr) {
+                if (res.id) {
+                    model.set('isSaving', false);
+                    model.setProperties(res);
+                } else {
+                    model.set('isError', true);
+                }
+            },
+            error: function (xhr, status, err) {
+                model.set('isError', true);
+            }
+        });
+    }
+});
+
 App.ApplicationView = Ember.View.extend({
     templateName: 'application'
 });
@@ -58,11 +113,24 @@ App.ApplicationAdapter = DS.RESTAdapter.extend({
     host: '/days'
 });
 
+App.DayModel = App.Model.extend();
+
+App.DayModel.reopenClass({
+    collection: Ember.A(),
+    find: function (id) {
+        return App.Model.find(id, App.DayModel);
+    },
+    findAll: function () {
+        return App.Model.findAll('/days', App.DayModel, 'memo');
+    },
+    updateRecord: function (model) {
+        App.Model.updateRecord('/todo/job_edit', App.DayModel, model);
+    }
+});
+
 App.IndexRoute = Ember.Route.extend({
     model: function () {
-        return Ember.$.getJSON('/days').then(function (data) {
-            return data;
-        });
+        return App.DayModel.findAll();
     }
 });
 
@@ -78,7 +146,6 @@ App.IndexView = Ember.View.extend({
         var view = this;
         var $view = this.$();
 
-        /*
         var bounce_return = new Bounce();
         bounce_return.translate({
             from: { x: -($(window).width()), y: 0 },
@@ -91,7 +158,6 @@ App.IndexView = Ember.View.extend({
         bounce_return.applyTo($view).then(function() {
             bounce_return.remove();
         });
-        */
     },
     willDestroyElement: function () {
         //console.log('destroy');
@@ -116,7 +182,6 @@ App.DetailView = Ember.View.extend({
         var view = this;
         var $view = this.$();
 
-        /*
         var bounce_forward = new Bounce();
         bounce_forward.translate({
             from: { x: ($(window).width()), y: 0 },
@@ -129,7 +194,6 @@ App.DetailView = Ember.View.extend({
         bounce_forward.applyTo($view).then(function() {
             bounce_forward.remove();
         });
-        */
     },
     willDestroyElement: function () {
         //console.log('destroy');
