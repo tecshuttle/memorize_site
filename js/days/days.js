@@ -78,6 +78,7 @@ App.IndexView = Ember.View.extend({
         var view = this;
         var $view = this.$();
 
+        /*
         var bounce_return = new Bounce();
         bounce_return.translate({
             from: { x: -($(window).width()), y: 0 },
@@ -90,6 +91,7 @@ App.IndexView = Ember.View.extend({
         bounce_return.applyTo($view).then(function() {
             bounce_return.remove();
         });
+        */
     },
     willDestroyElement: function () {
         //console.log('destroy');
@@ -114,6 +116,7 @@ App.DetailView = Ember.View.extend({
         var view = this;
         var $view = this.$();
 
+        /*
         var bounce_forward = new Bounce();
         bounce_forward.translate({
             from: { x: ($(window).width()), y: 0 },
@@ -126,6 +129,7 @@ App.DetailView = Ember.View.extend({
         bounce_forward.applyTo($view).then(function() {
             bounce_forward.remove();
         });
+        */
     },
     willDestroyElement: function () {
         //console.log('destroy');
