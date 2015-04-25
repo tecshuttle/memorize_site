@@ -24,11 +24,14 @@ class analyse extends CI_Controller
         //取项目总耗时
         $projects = array(
             array('code' => 'xs', 'name' => '协顺'),
-            array('code' => 'hk', 'name' => '环科'),
             array('code' => 'car', 'name' => 'Car2Share'),
+            array('code' => 'hk', 'name' => '环科'),
             array('code' => 'sb', 'name' => '选最好'),
             array('code' => 'ax', 'name' => '安信专题'),
-            array('code' => 'td', 'name' => 'GTD')
+            array('code' => 'td', 'name' => 'GTD'),
+            array('code' => 'wx', 'name' => '移动互联网'),
+            array('code' => 'zz', 'name' => '种子'),
+            array('code' => 'iOS', 'name' => 'iOS开发')
         );
 
         foreach ($projects as &$p) {
