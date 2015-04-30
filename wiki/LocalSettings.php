@@ -30,7 +30,7 @@ $wgScriptPath = "/wiki";
 $wgScriptExtension = ".php";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "http://todo.zenho.com";
+$wgServer = "http://memo.tomtalk.net";
 
 ## The relative URL path to the skins directory
 $wgStylePath = "$wgScriptPath/skins";
@@ -53,10 +53,10 @@ $wgEmailAuthentication = true;
 
 ## Database settings
 $wgDBtype = "mysql";
-$wgDBserver = "42.121.108.182";
+$wgDBserver = 'localhost';//"42.121.108.182";
 $wgDBname = "tom_wiki";
 $wgDBuser = "root";
-$wgDBpassword = "root";
+$wgDBpassword = "123";
 
 # MySQL specific settings
 $wgDBprefix = "";
