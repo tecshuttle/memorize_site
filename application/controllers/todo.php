@@ -414,7 +414,7 @@ class todo extends CI_Controller
             array('job_name' => '洗漱、穿衣', 'time_long' => 1800, 'job_type_id' => 1),
             array('job_name' => '通勤', 'time_long' => 3600 + (18 * 60), 'job_type_id' => 7),
 
-            array('job_name' => '早餐、新闻', 'time_long' => 1800, 'job_type_id' => 0),
+            array('job_name' => '早餐', 'time_long' => (24 * 60), 'job_type_id' => 1),
             array('job_name' => '午餐、午休', 'time_long' => 3600, 'job_type_id' => 1),
 
             array('job_name' => '晚餐', 'time_long' => 1800, 'job_type_id' => 1),
