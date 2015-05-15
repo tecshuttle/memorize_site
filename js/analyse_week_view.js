@@ -100,7 +100,44 @@ $(function () {
             draw_pie(work_type);
         }
     });
+
+    get_week_time_by_project();
 });
+
+function get_week_time_by_project() {
+    var url_day = $.getUrlParam('day');
+
+    if (url_day === null) {
+        url_day = new Date().Format('yyyy-MM-dd');
+    }
+
+    $.ajax({
+        url: "/analyse/get_week_time_by_project",
+        type: "POST",
+        data: {
+            week_date: url_day
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            var project = [];
+            var code_name = {
+                '': '其它',
+                'car': 'Car2Share',
+                'zz': '种子',
+                'xs': '协顺',
+                'ws': 'zenho微信'
+            };
+
+            $.each(result, function (i, p) {
+                var name = (code_name[p.code] === undefined ? p.code : code_name[p.code]);
+                project.push(name + ' ' + p.total / 3600 + '小时');
+            });
+
+            $('#time_by_project').html('<h4>项目用时</h4>' + project.join('<span style="display: inline-block;width:2em;"></span>'));
+        }
+    });
+}
 
 function draw_pie(work_type) {
     var url_day = $.getUrlParam('day');

@@ -110,6 +110,24 @@ class analyse extends CI_Controller
         $this->load->view('todo/analyse_week_view', $data);
     }
 
+    public function get_week_time_by_project()
+    {
+        $week_date = $this->input->post('week_date', true);
+        $week_range = $this->get_time_range_of_week($week_date);
+
+        $sql = "SELECT LEFT(job_name, POSITION(':' IN job_name) - 1) AS code, SUM(time_long) AS total "
+            . "FROM todo_lists "
+            . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) "
+            . "GROUP BY code";
+
+
+        $query = $this->db->query($sql);
+
+        $data = $query->result();
+
+        echo json_encode($data);
+    }
+
     public function getPieDataOfTaskType()
     {
         $week_date = $this->input->post('week_date', true);

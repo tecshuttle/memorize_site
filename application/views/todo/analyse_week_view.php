@@ -54,6 +54,9 @@
     </div>
 
     <div class="container-fluid">
+
+        <div class="row" id="time_by_project" style="margin: 0em 0em;"></div>
+
         <div class="row">
             <div id="day_1" class="col-xs-3 pie"></div>
             <div id="day_2" class="col-xs-3 pie"></div>
