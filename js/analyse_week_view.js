@@ -126,7 +126,7 @@ function get_week_time_by_project() {
                 'car': 'Car2Share',
                 'zz': '种子',
                 'xs': '协顺',
-                'ws': 'zenho微信'
+                'wx': 'zenho微信'
             };
 
             $.each(result, function (i, p) {
