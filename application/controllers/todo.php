@@ -104,7 +104,11 @@ class todo extends CI_Controller
 
     public function get_jobs_of_week()
     {
-        $all_jobs_of_week = $this->get_all_jobs_of_week($this->input->post('day', true));
+
+        $day = $this->input->post('day', true);
+        $job_type_id = $this->input->post('job_type_id', true);
+
+        $all_jobs_of_week = $this->get_all_jobs_of_week($day, $job_type_id);
 
         //把任务按日期分组
         $list = array();
@@ -589,12 +593,13 @@ class todo extends CI_Controller
         );
     }
 
-    public function get_all_jobs_of_week($day)
+    public function get_all_jobs_of_week($day, $job_type_id)
     {
         $week = $this->get_time_range_of_week($day);
 
         $sql = "SELECT * FROM $this->todo_lists "
             . "WHERE user_id = $this->uid AND start_time >= $week->start AND start_time <= $week->end "
+            . ($job_type_id === false ? '' : "AND job_type_id = $job_type_id ")
             . "ORDER BY status DESC, start_time ASC";
 
         $query = $this->db->query($sql);

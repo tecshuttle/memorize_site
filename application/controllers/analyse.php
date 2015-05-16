@@ -110,16 +110,55 @@ class analyse extends CI_Controller
         $this->load->view('todo/analyse_week_view', $data);
     }
 
+    public function work_week_report()
+    {
+        $data = array(
+            'title' => 'Report of Work in Week',
+            'user_name' => $_SESSION['user_name'],
+            'css' => array(),
+            'js' => array(
+                '/js/todo/work_week_report.js'
+            )
+        );
+
+        $this->load->view('todo/work_week_report', $data);
+    }
+
     public function get_week_time_by_project()
     {
         $week_date = $this->input->post('week_date', true);
         $week_range = $this->get_time_range_of_week($week_date);
 
         $sql = "SELECT LEFT(job_name, POSITION(':' IN job_name) - 1) AS code, SUM(time_long) AS total "
+            . ", IF(POSITION(':' IN job_name) > 0 , 1, 0) as is_code "
             . "FROM todo_lists "
             . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) "
-            . "GROUP BY code";
+            . "GROUP BY code ORDER BY is_code DESC, total DESC";
 
+        $query = $this->db->query($sql);
+
+        $data = $query->result();
+
+        echo json_encode($data);
+    }
+
+    public function get_work_week_report_jobs_by_code()
+    {
+        $code = $this->input->post('code', true);
+
+        $week_date = $this->input->post('week_date', true);
+        $week_range = $this->get_time_range_of_week($week_date);
+
+        $sql = "SELECT SUBSTRING(job_name, POSITION(':' IN job_name) + " . ($code === '' ? 1 : 2) . ") AS name FROM todo_lists "
+            . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) ";
+
+        if ($code === '') {
+            $sql .= "AND job_name NOT LIKE '%:%'";
+        } else {
+            $sql .= "AND job_name LIKE '$code%'";
+        }
+
+        //echo $sql; exit;
 
         $query = $this->db->query($sql);
 
