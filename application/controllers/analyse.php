@@ -158,6 +158,8 @@ class analyse extends CI_Controller
             $sql .= "AND job_name LIKE '$code%'";
         }
 
+        $sql .= ' ORDER BY start_time ASC';
+
         //echo $sql; exit;
 
         $query = $this->db->query($sql);
