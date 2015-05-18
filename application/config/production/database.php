@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = '42.121.108.182';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'root';
+$db['default']['password'] = 'tec007DB';
 $db['default']['database'] = 'tomtalk';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

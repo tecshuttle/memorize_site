@@ -1,7 +1,7 @@
 <?php
 $batchDB['host'] = 'localhost';
 $batchDB['user'] = 'root';
-$batchDB['pwd']  = 'root';
+$batchDB['pwd']  = 'tec007DB';
 
 $conn = mysql_connect( $batchDB['host'], $batchDB['user'], $batchDB['pwd'] ) OR die( 1 );
 mysql_select_db('memorize', $conn) OR die( 1 );

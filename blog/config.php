@@ -3,7 +3,7 @@ session_start();
 
 $batchDB['host'] = 'localhost';
 $batchDB['user'] = 'root';
-$batchDB['pwd'] = ($_SERVER['HTTP_HOST'] == 'memo.zenho.com' ? '123' : 'root');
+$batchDB['pwd'] = ($_SERVER['HTTP_HOST'] == 'memo.zenho.com' ? '123' : 'tec007DB');
 
 $conn = mysql_connect($batchDB['host'], $batchDB['user'], $batchDB['pwd']) OR die(1);
 mysql_select_db('tomtalk', $conn) OR die(1);
