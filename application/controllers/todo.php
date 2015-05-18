@@ -39,6 +39,15 @@ class todo extends CI_Controller
         $this->load->view('todo/index', $data);
     }
 
+    public function test()
+    {
+        $a = array(
+            'success' => true
+        );
+
+        echo json_encode(array_merge($_GET, $a));
+    }
+
 
     public function get_work_type()
     {
