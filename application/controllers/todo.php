@@ -41,11 +41,14 @@ class todo extends CI_Controller
 
     public function test()
     {
-        $a = array(
+        $request_body = file_get_contents('php://input', true);
+        $post = json_decode($request_body, true);
+
+        $result = array(
             'success' => true
         );
 
-        echo json_encode(array_merge($_GET, $a));
+        echo json_encode(array_merge($post, $result));
     }
 
 

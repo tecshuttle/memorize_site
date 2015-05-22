@@ -20,13 +20,14 @@ myModule.controller('inputCtrl', ['$scope', '$http',
         $scope.save = function () {
             console.log($scope.text);
 
+
+
             $http.post('/todo/test', {
-                data: '$scope.text'
-            }).
-                success(function (data, status, headers, config) {
+                data: $scope.text,
+                input: $scope.text
+            }).success(function (data, status, headers, config) {
                     console.log(data);
-                }).
-                error(function (data, status, headers, config) {
+                }).error(function (data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                 });
