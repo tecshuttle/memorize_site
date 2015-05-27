@@ -364,11 +364,12 @@ $config['css_js_version'] = '16';
 
 $config['smtp'] = array(
     'protocol' => 'smtp',
-    'smtp_host' => 'ssl://smtp.exmail.qq.com',
-    'smtp_user' => 'tom@zenho.co.uk',
-    'email' => 'tom@zenho.co.uk', //自己添加的配置项
-    'smtp_pass' => 'tecto9',
-    'smtp_port' => 465,
+    'smtp_host' => 'smtp.163.com',
+    'smtp_user' => 'sky007_tom',
+    'email' => 'sky007_tom@163.com',   //自己添加的配置项
+    'smtp_pass' => '100Hacker',
+    'smtp_port' => 25,
+    'smtp_timeout' => 5,
     'charset' => 'utf-8',
     'wordwrap' => TRUE,
     'mailtype' => 'html'

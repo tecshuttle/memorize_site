@@ -197,7 +197,7 @@ class analyse extends CI_Controller
 
         $subject = '尊仕和工作简报';
 
-        $this->f->send_mail('11877803@qq.com', $subject, $content);
+        $this->f->send_mail('sky007_tom@163.com', $subject, $content);
     }
 
     public function get_work_week_report_jobs_by_code()

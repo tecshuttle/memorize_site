@@ -31,7 +31,7 @@ class F
 
         //以下设置Email内容
         $CI->email->to($email);
-        $CI->email->from($CI->config->config['smtp']['email'], 'Car2Share');
+        $CI->email->from($CI->config->config['smtp']['email'], 'tom');
         $CI->email->subject($subject);
         $CI->email->message($content);
 
