@@ -127,7 +127,7 @@ class analyse extends CI_Controller
     public function get_week_time_by_project()
     {
         $week_date = $this->input->post('week_date', true);
-        $week_range = $this->get_time_range_of_week($week_date);
+        $week_range = $this->f->get_time_range_of_week($week_date);
 
         $sql = "SELECT LEFT(job_name, POSITION(':' IN job_name) - 1) AS code, SUM(time_long) AS total "
             . ", IF(POSITION(':' IN job_name) > 0 , 1, 0) as is_code "
@@ -140,6 +140,64 @@ class analyse extends CI_Controller
         $data = $query->result();
 
         echo json_encode($data);
+
+
+    }
+
+
+    public function send_report_mail()
+    {
+        $day = date('Y-m-d', time());
+        $project_code = $this->input->get('project_code', true);
+
+        echo $this->get_day_report($day, $project_code);
+    }
+
+    private function get_day_report($day, $project_code)
+    {
+        $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, false, $project_code, $this->uid);
+
+        //把任务按日期分组
+        $list = $this->todo_lib->gather_jobs_by_day($all_jobs_of_week);
+
+        //把工作把周一到周日顺序排列
+        $ol = array();
+        for ($i = 1; $i < 7; $i++) {
+            $ol[$i]['jobs'] = $list[$i];
+        }
+
+        $ol[0]['jobs'] = $list[0]; //周日是0，加在最后
+
+        //给每天加上日期
+        $time_range = $this->f->get_time_range_of_week($day);
+        $start = $time_range->start;
+
+        foreach ($ol as &$day) {
+            $day['date'] = date('Y-m-d', $start);
+            $start += 3600 * 24;
+        }
+
+        $data = array(
+            'days' => $ol,
+            'css' => array(),
+            'js' => array()
+        );
+
+
+        return $this->load->view('todo/report_mail', $data, true);
+
+    }
+
+
+    public function send_day_report_mail()
+    {
+        $day = date('Y-m-d', time());
+
+        $content = $this->get_day_report($day, 'car');
+
+        $subject = '尊仕和工作简报';
+
+        $this->f->send_mail('11877803@qq.com', $subject, $content);
     }
 
     public function get_work_week_report_jobs_by_code()
@@ -147,7 +205,7 @@ class analyse extends CI_Controller
         $code = $this->input->post('code', true);
 
         $week_date = $this->input->post('week_date', true);
-        $week_range = $this->get_time_range_of_week($week_date);
+        $week_range = $this->f->get_time_range_of_week($week_date);
 
         $sql = "SELECT SUBSTRING(job_name, POSITION(':' IN job_name) + " . ($code === '' ? 1 : 2) . ") AS name FROM todo_lists "
             . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) ";
@@ -176,7 +234,7 @@ class analyse extends CI_Controller
         $work_type = 3;
 
         //找出$i_day对应的日期时间，开始和结束
-        $week_range = $this->get_time_range_of_week($week_date);
+        $week_range = $this->f->get_time_range_of_week($week_date);
 
         if ($i_day == 'week') {
             $start = $week_range->start;
@@ -203,26 +261,6 @@ class analyse extends CI_Controller
         echo json_encode($data);
     }
 
-
-    //取一个指定日期，周一的开始时间
-    public function get_time_range_of_week($day)
-    {
-        $time = strtotime($day);
-        $i_week = date('w', $time);
-
-        if ($i_week == 0) {
-            $start = $time - 3600 * 24 * 6;
-            $end = $time + 3600 * 24 - 1;
-        } else {
-            $start = $time - 3600 * 24 * ($i_week - 1);
-            $end = $time + 3600 * 24 * (8 - $i_week) - 1;
-        }
-
-        return (object)array(
-            'start' => $start,
-            'end' => $end
-        );
-    }
 
     public function get_project_day_hours()
     {

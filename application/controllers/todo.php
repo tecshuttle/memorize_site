@@ -26,7 +26,6 @@ class todo extends CI_Controller
         }
 
         $data = array(
-            'title' => 'Company profile',
             'menu' => 'about_us',
             'work_type' => $this->get_work_type(),
             'user_name' => $_SESSION['user_name'],
@@ -119,32 +118,16 @@ class todo extends CI_Controller
 
         $day = $this->input->post('day', true);
         $job_type_id = $this->input->post('job_type_id', true);
+        $project_code = $this->input->post('project_code', true);
 
-        $all_jobs_of_week = $this->get_all_jobs_of_week($day, $job_type_id);
+        $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, $job_type_id, $project_code, $this->uid);
 
         //把任务按日期分组
-        $list = array();
-
-        foreach ($all_jobs_of_week as $job) {
-            $job->job_desc = str_replace("\n", '</br>', $job->job_desc);
-            $i_week = date('w', $job->start_time);
-
-            if (!isset($list[$i_week])) {
-                $list[$i_week] = array();
-            }
-
-            array_push($list[$i_week], $job);
-        }
-
-        //补全7天的数据，数据缺失，页面显示会出错。
-        for ($i = 0; $i < 7; $i++) {
-            if (!isset($list[$i])) {
-                $list[$i] = array();
-            }
-        }
+        $list = $this->todo_lib->gather_jobs_by_day($all_jobs_of_week);
 
         echo json_encode($list);
     }
+
 
     public function get_jobs_of_day()
     {
@@ -169,7 +152,7 @@ class todo extends CI_Controller
     public function add_job()
     {
         //取得任务当天的开始时间
-        $week = $this->get_time_range_of_week($this->input->post('week_date', true));
+        $week = $this->f->get_time_range_of_week($this->input->post('week_date', true));
         $i_day = $this->input->post('i_day', true);
 
         if ($i_day == 0) {
@@ -353,7 +336,7 @@ class todo extends CI_Controller
 
     public function export_csv()
     {
-        $week = $this->get_time_range_of_week($this->input->get('day', true));
+        $week = $this->f->get_time_range_of_week($this->input->get('day', true));
 
         $sql = "SELECT * FROM $this->todo_lists "
             . " WHERE user_id = $this->uid AND start_time >= $week->start AND start_time <= $week->end"
@@ -571,7 +554,7 @@ class todo extends CI_Controller
         }
 
         $to_day = substr($this->input->post('to_day', true), 3);
-        $week = $this->get_time_range_of_week($this->input->post('week_date', true));
+        $week = $this->f->get_time_range_of_week($this->input->post('week_date', true));
 
         if ($to_day == 0) {
             $start = $week->start + 6 * (3600 * 24);
@@ -583,41 +566,6 @@ class todo extends CI_Controller
             'start' => $start,
             'end' => $start + 3600 * 24 - 1
         );
-    }
-
-    //取一个指定日期，周一的开始时间
-    public function get_time_range_of_week($day)
-    {
-        $time = strtotime($day);
-        $i_week = date('w', $time);
-
-        if ($i_week == 0) {
-            $start = $time - 3600 * 24 * 6;
-            $end = $time + 3600 * 24 - 1;
-        } else {
-            $start = $time - 3600 * 24 * ($i_week - 1);
-            $end = $time + 3600 * 24 * (8 - $i_week) - 1;
-        }
-
-        return (object)array(
-            'start' => $start,
-            'end' => $end
-        );
-    }
-
-    public function get_all_jobs_of_week($day, $job_type_id)
-    {
-        $week = $this->get_time_range_of_week($day);
-
-        $sql = "SELECT * FROM $this->todo_lists "
-            . "WHERE user_id = $this->uid AND start_time >= $week->start AND start_time <= $week->end "
-            . ($job_type_id === false ? '' : "AND job_type_id = $job_type_id ")
-            . "ORDER BY status DESC, start_time ASC";
-
-        $query = $this->db->query($sql);
-        $data = $query->result();
-
-        return $data;
     }
 }
 

@@ -27,6 +27,15 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 };
 
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        return (r !== null ? decodeURI(r[2]) : null);
+    }
+})(jQuery);
+
+
 var todo_site = document.domain;
 
 var bind_event_add = true;  //确保事件只绑定一次的信号量
@@ -258,13 +267,23 @@ function set_day_title() {
 function load_todo_list() {
 
     var week_date = $('#todo-week').attr('week_date');
+
+    var project_code = $.getUrlParam('project_code');
+
+    if (project_code === null) {
+        project_code = '';
+    } else {
+        $('#send_report_mail').show();
+    }
+
     $.ajax({
         url: "http://" + todo_site + "/todo/get_jobs_of_week",
         type: "POST",
         data: {
-            day: week_date
+            day: week_date,
+            project_code: project_code
+
         },
-        timeout: 3000,
         dataType: "json",
         success: function (result) {
             $('.connectedSortable>li').remove();
@@ -306,7 +325,7 @@ function load_todo_list() {
 
                 var day_job_time = '<span class="day_job_time">' + (done / 3600).toFixed(1) + '/' + (total / 3600).toFixed(1) + '</span>';
                 $('#day_title' + i).html(day_job_time);
-                if (list === '') {
+                if (list === '' && project_code ==='') {
                     list = '<button class="btn btn-warning btn-xs" onclick="init_day(this, \'' + week_date + '\', ' + i + ');">初始化</button>';
                 }
                 $('#day' + i).html(list);

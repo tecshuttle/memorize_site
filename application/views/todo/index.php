@@ -22,6 +22,8 @@
         <a class="btn btn-default btn-xs" target="_blank" href="/analyse">月统计</a>
         <a class="btn btn-default btn-xs" target="_blank" href="/analyse/week_view">周统计</a>
         <a class="btn btn-default btn-xs" target="_blank" href="/analyse/work_week_report">工作周报</a>
+        <a class="btn btn-default btn-xs" target="_blank" href="/?project_code=car">Car2Share</a>
+        <a class="btn btn-default btn-xs" target="_blank" href="/analyse/send_report_mail?project_code=car" id="send_report_mail">日报邮件</a>
         <a class="btn btn-success btn-xs" onclick="export_csv();">导出csv</a>
         </span>
     </div>
