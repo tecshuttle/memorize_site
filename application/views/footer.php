@@ -1,7 +1,7 @@
 <?php
 //设置默认值
 $js = (isset($js) ? $js : array());
-$css_js_version = (isset($css_js_version) ? $css_js_version : '');
+$css_js_version = $this->config->config['css_js_version'];
 ?>
 
 

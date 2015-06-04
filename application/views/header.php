@@ -9,7 +9,7 @@
 
     <?php
     //设置默认值
-    $css_js_version = (isset($css_js_version) ? $css_js_version : '');
+    $css_js_version = $this->config->config['css_js_version'];;
     $css = (isset($css) ? $css : array());
     ?>
 
