@@ -45,8 +45,8 @@ class vue extends CI_Controller
         $limit = $this->input->post('limit', true);
 
         $option = array(
-            'limit' => $limit,
-            'offset' => $start,
+            'limit' => $limit ? $limit : 10,
+            'offset' => $start ? $start : 0,
             'sortBy' => 'ctime'
         );
 

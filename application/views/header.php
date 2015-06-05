@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html <?= (isset($appName) ? "ng-app='$appName'" : '') ?>>
 
 <head>
     <meta charset="UTF-8">

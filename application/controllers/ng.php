@@ -22,6 +22,7 @@ class ng extends CI_Controller
     {
         $data = array(
             'title' => 'Blog',
+            'appName' => 'blog',
             'css' => array(
                 '/css/bootstrap-3.1.1/css/bootstrap.min.css',
                 '/css/blog.css'
@@ -37,6 +38,27 @@ class ng extends CI_Controller
 
         $this->load->view('header', $data);
         $this->load->view('blog/ngIndex', $data);
+        $this->load->view('footer', $data);
+    }
+
+    public function memo_type()
+    {
+        $data = array(
+            'title' => 'memo分类',
+            'appName' => 'memoType',
+            'css' => array(
+                '/css/bootstrap-3.1.1/css/bootstrap.min.css',
+                '/css/blog.css'
+            ),
+            'js' => array(
+                '/js/angular.1.3.15.js',
+                '/js/angular-route.1.3.16.js',
+                '/js/memo/ng-type.js'
+            )
+        );
+
+        $this->load->view('header', $data);
+        $this->load->view('memo/ng-type', $data);
         $this->load->view('footer', $data);
     }
 

@@ -1,7 +1,4 @@
-<div ng-app="blog">
-    <div ng-controller="blogCtrl">
-        <textarea ng-model="blog.content"></textarea>
-
-        <div ng-bind-html="blog.content | marked"></div>
-    </div>
+<div ng-controller="blogCtrl">
+    <div ng-repeat="blog in blogs" ng-bind-html="blog.text | marked"></div>
 </div>
+
