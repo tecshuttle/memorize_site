@@ -7,6 +7,17 @@
 
     <link rel="stylesheet" href="/css/bootstrap-3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/todo.css">
+    <style>
+        pre:hover {
+            color: #333;
+        }
+
+        pre {
+            background-color: #fff;
+            border: 0;
+            border-radius: 0;
+        }
+    </style>
 </head>
 
 <body>
