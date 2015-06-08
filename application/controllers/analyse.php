@@ -140,8 +140,6 @@ class analyse extends CI_Controller
         $data = $query->result();
 
         echo json_encode($data);
-
-
     }
 
 
@@ -150,7 +148,28 @@ class analyse extends CI_Controller
         $day = date('Y-m-d', time());
         $project_code = $this->input->get('project_code', true);
 
-        echo $this->get_day_report($day, $project_code);
+        $data = array(
+            'title' => 'Report of Work in Week',
+            'user_name' => $_SESSION['user_name'],
+            'day_report' => $this->get_day_report($day, $project_code),
+            'css' => array(),
+            'js' => array(
+                '/js/todo/day_report.js'
+            )
+        );
+
+        $this->load->view('todo/day_report', $data);
+    }
+
+    public function send_report_mail_api()
+    {
+        $day = $this->input->post('day', true);
+        $project_code = $this->input->post('code', true);
+
+        echo json_encode(array(
+            'success' => true,
+            'report' => $this->get_day_report($day, $project_code)
+        ));
     }
 
     private function get_day_report($day, $project_code)
