@@ -39,6 +39,29 @@ class vue extends CI_Controller
         $this->load->view('footer', $data);
     }
 
+    public function getUser()
+    {
+        $user = false;
+
+        if (isset($_SESSION['uid'])) {
+            $this->load->model('users_model');
+            $user = $this->users_model->getByID($_SESSION['uid']);
+            $_SESSION['user_name'] = $user->mail;
+
+
+        } else if (isset($_COOKIE['uid'])) {
+            $this->load->model('users_model');
+            $user = $this->users_model->getByID($_COOKIE['uid']);
+            $_SESSION['uid'] = $user->uid;
+            $_SESSION['user_name'] = $user->mail;
+        }
+
+        echo json_encode(array(
+            'success' => ($user === false ? false : true),
+            'user' => $user
+        ));
+    }
+
     public function getList()
     {
         $start = $this->input->post('start', true);

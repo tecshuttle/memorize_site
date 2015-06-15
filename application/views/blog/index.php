@@ -1,6 +1,6 @@
 <div id="contents">
     <div id="contents-list">
-        <p v-on="click: onNew" class="blog-item" style="text-align: center;">新建blog</p>
+        <p v-on="click: onNew" v-show="user" class="blog-item" style="text-align: center;">新建blog</p>
 
         <p v-repeat="items" v-on="click: onClick" v-text="text | title"
            class="blog-item {{active ? 'active' : ''}} {{saved ? '' : 'saving'}}"></p>
@@ -10,7 +10,7 @@
 </div>
 
 <div id="blog">
-    <div class="blog-toolbar">
+    <div class="blog-toolbar" v-show="user">
         <span v-on="click: onEdit" class="btn">
             <span class="glyphicon glyphicon-pencil"></span>
         </span>

@@ -7,6 +7,7 @@ var contents = new Vue({
     data: {
         loading: false,
         loadAll: false,
+        user: false,
         items: []
     },
     created: function () {
@@ -31,6 +32,16 @@ var contents = new Vue({
                 }
             }
         });
+
+        $.ajax({
+            url: "/vue/getUser",
+            type: "POST",
+            dataType: "json",
+            success: function (result) {
+                me.user = result.user;
+                blog.user = result.user;
+            }
+        });
     },
     methods: {
         load: function () {
@@ -49,9 +60,6 @@ var contents = new Vue({
                 },
                 dataType: "json",
                 success: function (result) {
-                    console.log();
-
-
                     $.each(result.data, function (i, item) {
                         item.saved = true;
                         me.items.push(item);
@@ -67,7 +75,6 @@ var contents = new Vue({
         },
 
         onClick: function (e) {
-            console.log($("#load-mark").is(":visible"));
             blog.load(e.target.__vue__);
         },
 
@@ -105,6 +112,7 @@ var blog = new Vue({
     el: '#blog',
     vue: '',
     data: {
+        user: false,
         active: false,
         text: ''
     },
