@@ -77,7 +77,7 @@
     <div id="container">
       <div class="top-menu">
         <a href="/" style="background-color:#2FB8CB">首页</a>
-        <a href="/blog" >博客</a>
+        <a href="http://todo.tomtalk.net/vue" >博客</a>
         <a href="/wiki" >wiki</a>
         <a href="/memorize" >别忘了</a>
         <a href="http://todo.tomtalk.net" >GTD</a>

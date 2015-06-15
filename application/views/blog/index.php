@@ -5,7 +5,7 @@
         <p v-repeat="items" v-on="click: onClick" v-text="text | title"
            class="blog-item {{active ? 'active' : ''}} {{saved ? '' : 'saving'}}"></p>
 
-        <p class="blog-item" id="load-mark">{{loadAll ? 'done' : 'loading...'}}</p>
+        <p class="blog-item" id="load-mark">{{loadAll ? 'done' : ''}}</p>
     </div>
 </div>
 
