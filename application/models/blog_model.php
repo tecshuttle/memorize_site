@@ -16,7 +16,7 @@ class blog_model extends CI_Model
         $options = array_merge(array('sortDirection' => 'DESC'), $options);
 
         // Add where clauses to query
-        $qualificationArray = array();
+        $qualificationArray = array('cid');
 
         foreach ($qualificationArray as $qualifier) {
             if (isset($options[$qualifier]))
@@ -52,7 +52,7 @@ class blog_model extends CI_Model
 
         $query = $this->db->get($this->table);
 
-        if (isset($options['USER_CODE'])) {
+        if (isset($options['cid'])) {
             return $query->row(0);
         } else {
             return array(
