@@ -6,7 +6,7 @@ Ember.Handlebars.helper('getDate', function (time) {
     var date = new Date(time * 1000);
 
     if (moment(date).format('D') == '1') {
-        return moment(date).format('YYYY-M-D');
+        return moment(date).format('M月');
     } else {
         return moment(date).format('D');
     }
@@ -60,7 +60,6 @@ App.Model.reopenClass({
         $.ajax({
             url: url,
             type: "GET",
-            data: {day: '2015-04-16'},
             dataType: "json",
             success: function (res, status, xhr) {
                 $.each(res, function (i, row) {
@@ -69,10 +68,42 @@ App.Model.reopenClass({
                     item.set('isLoaded', true);
                     Ember.get(type, 'collection').pushObject(item);
                 });
+
+                collection.updateTitleDay();
             }
         });
 
         return Ember.get(type, 'collection');
+    },
+    findWeek: function (url, type, day, key) {
+        Ember.get(type, 'collection').clear();
+
+        var collection = this;
+        var item = null;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {day: day},
+            dataType: "json",
+            success: function (res, status, xhr) {
+                $.each(res, function (i, row) {
+                    item = type.create();
+                    item.setProperties(row);
+                    item.set('isLoaded', true);
+                    Ember.get(type, 'collection').pushObject(item);
+                });
+
+                collection.updateTitleDay();
+            }
+        });
+
+        return Ember.get(type, 'collection');
+    },
+    updateTitleDay: function () {
+        var time = parseInt(App.DayModel.collection[0].time) * 1000;
+        var date = new Date(time);
+        $('#title_day').html(moment(date).format('YYYY-M'));
     },
     updateRecord: function (url, type, model) {
         var collection = this;
@@ -123,6 +154,9 @@ App.DayModel.reopenClass({
     findAll: function () {
         return App.Model.findAll('/days', App.DayModel, 'memo');
     },
+    findWeek: function (day) {
+        return App.Model.findWeek('/days', App.DayModel, day, 'memo');
+    },
     updateRecord: function (model) {
         App.Model.updateRecord('/todo/job_edit', App.DayModel, model);
     }
@@ -155,12 +189,28 @@ App.IndexView = Ember.View.extend({
             stiffness: 5
         });
 
-        bounce_return.applyTo($view).then(function() {
+        bounce_return.applyTo($view).then(function () {
             bounce_return.remove();
         });
     },
     willDestroyElement: function () {
         //console.log('destroy');
+    }
+});
+
+App.IndexController = Ember.ObjectController.extend({
+    actions: {
+        preWeek: function () {
+            var time = (parseInt(App.DayModel.collection[0].time) - (3600 * 24)) * 1000;
+            var date = new Date(time);
+            App.DayModel.findWeek(moment(date).format('YYYY-M-D'));
+        },
+
+        nextWeek: function () {
+            var time = (parseInt(App.DayModel.collection[6].time) + (3600 * 24)) * 1000;
+            var date = new Date(time);
+            App.DayModel.findWeek(moment(date).format('YYYY-M-D'));
+        }
     }
 });
 
@@ -191,7 +241,7 @@ App.DetailView = Ember.View.extend({
             stiffness: 5
         });
 
-        bounce_forward.applyTo($view).then(function() {
+        bounce_forward.applyTo($view).then(function () {
             bounce_forward.remove();
         });
     },

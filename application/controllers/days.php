@@ -10,24 +10,19 @@ class days extends CI_Controller
 
     function index()
     {
-        $method = $_SERVER['REQUEST_METHOD'];
+        $day = $this->input->get('day', true);
 
-        $week = $this->f->get_time_range_of_week(date('Y-m-d', time()));
-
-
-        if ($method == 'GET') {
-            $data = $this->days_model->get_days(array(
-                'time' => "$week->start",
-            ));
-
-            echo json_encode($data);
-            exit;
+        if ($day === false) {
+            $week = $this->f->get_time_range_of_week(date('Y-m-d', time()));
+        } else {
+            $week = $this->f->get_time_range_of_week($day);
         }
 
+        $data = $this->days_model->get_days(array(
+            'time' => $week->start
+        ));
 
-        print_r($_SERVER['REQUEST_METHOD']);
-        print_r($_POST);
-        echo file_get_contents('php://input');
+        echo json_encode($data);
     }
 
     function update()
