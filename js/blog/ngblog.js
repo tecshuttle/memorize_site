@@ -1,4 +1,4 @@
-var blog = angular.module('blog', ['ngRoute', 'ngSanitize']);
+var blog = angular.module('blog', ['ngSanitize', 'ngRoute']);
 
 blog.controller('blogCtrl', ['$scope', '$http',
     function ($scope, $http) {
@@ -19,8 +19,12 @@ blog.controller('blogCtrl', ['$scope', '$http',
     }
 ]);
 
-blog.filter('marked', function () {
-    return marked;
+blog.filter('markdown', function ($sce) {
+    var converter = new Showdown.converter();
+    return function (value) {
+        var html = converter.makeHtml(value || '');
+        return $sce.trustAsHtml(html);
+    };
 });
 
 

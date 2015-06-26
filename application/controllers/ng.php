@@ -30,8 +30,8 @@ class ng extends CI_Controller
             'js' => array(
                 '/js/angular.1.3.15.js',
                 '/js/angular-route.1.3.16.js',
-                '/js/ionic-v1.0.0/js/angular/angular-sanitize.min.js',
-                '/js/marked.min.js',
+                '/js/ionic-v1.0.0/js/angular/angular-sanitize.js',
+                '/js/showdown.min.js',
                 '/js/blog/ngblog.js'
             )
         );
