@@ -1,20 +1,43 @@
 var blog = angular.module('blog', ['ngSanitize', 'ngRoute']);
 
-blog.controller('blogCtrl', ['$scope', '$http',
-    function ($scope, $http) {
-        $scope.blogs = [
-            {cid: 1},
-            {cid: 2},
-            {cid: 3}
-        ];
+blog.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'templates/home.html',
+            controller: 'contentCtrl'
+        })
 
-        $http.post('/vue/getList', {
-            data: $scope.text
+        .when('/blog/:cid', {
+            templateUrl: 'templates/blog.html',
+            controller: 'blogCtrl'
+        })
+
+        .otherwise({
+            redirectTo: '/'
+        });
+});
+
+blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
+    function ($scope, $http, $routeParams) {
+        $scope.blog = [];
+
+        $http.post('/ng/getBlog', {
+            cid: $routeParams.cid
+        }).success(function (blog, status, headers, config) {
+                $scope.blog = blog;
+            });
+    }
+]);
+
+
+blog.controller('contentCtrl', ['$scope', '$http',
+    function ($scope, $http) {
+        $scope.blogs = [];
+
+        $http.post('/ng/getList', {
+            //data: $scope.text
         }).success(function (blogs, status, headers, config) {
-                $scope.blogs = blogs.data;
-            }).error(function (data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+                $scope.blogs = blogs;
             });
     }
 ]);
@@ -26,6 +49,5 @@ blog.filter('markdown', function ($sce) {
         return $sce.trustAsHtml(html);
     };
 });
-
 
 //end file

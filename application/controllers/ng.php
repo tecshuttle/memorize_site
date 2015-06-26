@@ -64,21 +64,43 @@ class ng extends CI_Controller
 
     public function getList()
     {
-        $start = $this->input->post('start', true);
-        $limit = $this->input->post('limit', true);
-
         $option = array(
-            'limit' => $limit,
-            'offset' => $start,
             'sortBy' => 'ctime'
         );
 
-        //var_dump($option);
+        $data = $this->blog_model->get($option);
+
+        foreach ($data['data'] as &$blog) {
+            $blog->title = $this->getTitle($blog->text);
+            unset($blog->text);
+            unset($blog->ctime);
+            unset($blog->mtime);
+        }
+
+        echo json_encode($data['data']);
+    }
+
+    private function getTitle($text)
+    {
+        $lines = explode("\n", $text);
+        $title = $lines[0];
+
+        return trim(str_replace('#', '', $title));
+    }
+
+    public function getBlog()
+    {
+        $request_body = file_get_contents('php://input', true);
+        $body = json_decode($request_body, true);
+        $cid = $body['cid'];
+
+        $option = array(
+            'cid' => $cid
+        );
 
         $data = $this->blog_model->get($option);
 
         echo json_encode($data);
-
     }
 
     public function save()
