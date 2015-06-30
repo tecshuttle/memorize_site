@@ -20,12 +20,41 @@ blog.config(function ($routeProvider) {
 blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
     function ($scope, $http, $routeParams) {
         $scope.blog = [];
+        $scope.tags = [];
 
         $http.post('/ng/getBlog', {
             cid: $routeParams.cid
         }).success(function (blog, status, headers, config) {
                 $scope.blog = blog;
+
+                $http.post('/tag_api/getList', {
+                    //cid: $routeParams.cid
+                }).success(function (tags, status, headers, config) {
+                        $scope.tags = tags;
+
+                        $scope.markTag();
+                    });
             });
+
+        $scope.markTag = function () {
+            for (var i in $scope.tags) {
+                for (var j in $scope.blog.tags) {
+                    if ($scope.tags[i].id === $scope.blog.tags[j].tag_id) {
+                        $scope.tags[i].tagged = true;
+                    }
+                }
+            }
+        }
+
+        $scope.tagClick = function (tag) {
+            tag.tagged = !tag.tagged;
+
+            $http.post('/tag_api/tag', {
+                blog_id: $scope.blog.cid,
+                tag_id: tag.id,
+                is_tagged: tag.tagged
+            });
+        }
     }
 ]);
 

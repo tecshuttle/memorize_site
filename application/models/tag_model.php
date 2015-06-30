@@ -1,8 +1,8 @@
 <?php
 
-class blog_model extends CI_Model
+class tag_model extends CI_Model
 {
-    var $table = 'blog';
+    var $table = 'tags';
 
     function __construct()
     {
@@ -16,7 +16,7 @@ class blog_model extends CI_Model
         $options = array_merge(array('sortDirection' => 'DESC'), $options);
 
         // Add where clauses to query
-        $qualificationArray = array('cid');
+        $qualificationArray = array('id', 'rec_id', 'module');
 
         foreach ($qualificationArray as $qualifier) {
             if (isset($options[$qualifier]))
@@ -52,7 +52,7 @@ class blog_model extends CI_Model
 
         $query = $this->db->get($this->table);
 
-        if (isset($options['cid'])) {
+        if (isset($options['id'])) {
             return $query->row(0);
         } else {
             return array(
@@ -62,13 +62,6 @@ class blog_model extends CI_Model
         }
     }
 
-
-    function getTags($cid)
-    {
-        $sql = "select * from tagged where module='ng-blog' and rec_id = $cid";
-        $query = $this->db->query($sql);
-        return $query->result();
-    }
 
     function update($option)
     {
@@ -83,6 +76,28 @@ class blog_model extends CI_Model
     function delete($option)
     {
         $this->db->delete($this->table, $option);
+    }
+
+    function add_tag($cid, $tag_id)
+    {
+        $option = array(
+            'module' => 'ng-blog',
+            'tag_id' => $tag_id,
+            'rec_id' => $cid
+        );
+
+        $this->db->insert('tagged', $option);
+    }
+
+    function del_tag($cid, $tag_id)
+    {
+        $option = array(
+            'module' => 'ng-blog',
+            'tag_id' => $tag_id,
+            'rec_id' => $cid
+        );
+
+        $this->db->delete('tagged', $option);
     }
 }
 

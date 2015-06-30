@@ -98,9 +98,12 @@ class ng extends CI_Controller
             'cid' => $cid
         );
 
-        $data = $this->blog_model->get($option);
+        $blog = $this->blog_model->get($option);
+        $tags = $this->blog_model->getTags($cid);
 
-        echo json_encode($data);
+        $blog->tags = $tags;
+
+        echo json_encode($blog);
     }
 
     public function save()

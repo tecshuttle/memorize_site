@@ -148,8 +148,24 @@ p.saving {
     padding: 0 1em;
 }
 
-.ng-blog{
-    margin:1em;
+.ng-blog {
+    margin: 1em;
+}
+
+.ng-tag {
+    margin: 1em;
+}
+
+.ng-tag span {
+    cursor: pointer;
+    background-color: gainsboro;
+    margin: 0 0.3em;
+    padding: 0 0.5em;
+    border-radius: 1em;
+}
+.ng-tag span.tagged {
+    background-color: navy;
+    color: white;
 }
 
 h1 {
