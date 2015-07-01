@@ -63,6 +63,13 @@ class blog_model extends CI_Model
     }
 
 
+    function getUnTagged()
+    {
+        $sql = "select * from blog where cid not in (select rec_id from tagged where module = 'ng-blog') order by ctime desc";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     function getTags($cid)
     {
         $sql = "select * from tagged where module='ng-blog' and rec_id = $cid";

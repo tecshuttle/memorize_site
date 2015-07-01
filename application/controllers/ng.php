@@ -69,20 +69,16 @@ class ng extends CI_Controller
         $tagged_id = $body['tagged_id'];
 
         if ($tagged_id === '') {
-            $option = array(
-                'sortBy' => 'ctime'
-            );
+            $blogs = $this->blog_model->getUnTagged();
 
-            $data = $this->blog_model->get($option);
-
-            foreach ($data['data'] as &$blog) {
+            foreach ($blogs as &$blog) {
                 $blog->title = $this->getTitle($blog->text);
                 unset($blog->text);
                 unset($blog->ctime);
                 unset($blog->mtime);
             }
 
-            echo json_encode($data['data']);
+            echo json_encode($blogs);
         } else {
             $data = $this->blog_model->getTagged($tagged_id);
 
