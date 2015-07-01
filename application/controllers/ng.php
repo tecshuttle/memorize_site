@@ -64,20 +64,37 @@ class ng extends CI_Controller
 
     public function getList()
     {
-        $option = array(
-            'sortBy' => 'ctime'
-        );
+        $request_body = file_get_contents('php://input', true);
+        $body = json_decode($request_body, true);
+        $tagged_id = $body['tagged_id'];
 
-        $data = $this->blog_model->get($option);
+        if ($tagged_id === '') {
+            $option = array(
+                'sortBy' => 'ctime'
+            );
 
-        foreach ($data['data'] as &$blog) {
-            $blog->title = $this->getTitle($blog->text);
-            unset($blog->text);
-            unset($blog->ctime);
-            unset($blog->mtime);
+            $data = $this->blog_model->get($option);
+
+            foreach ($data['data'] as &$blog) {
+                $blog->title = $this->getTitle($blog->text);
+                unset($blog->text);
+                unset($blog->ctime);
+                unset($blog->mtime);
+            }
+
+            echo json_encode($data['data']);
+        } else {
+            $data = $this->blog_model->getTagged($tagged_id);
+
+            foreach ($data as &$blog) {
+                $blog->title = $this->getTitle($blog->text);
+                unset($blog->text);
+                unset($blog->ctime);
+                unset($blog->mtime);
+            }
+
+            echo json_encode($data);
         }
-
-        echo json_encode($data['data']);
     }
 
     private function getTitle($text)

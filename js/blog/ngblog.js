@@ -46,6 +46,7 @@ blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
             }
         }
 
+        //文章：添加、删除标签
         $scope.tagClick = function (tag) {
             tag.tagged = !tag.tagged;
 
@@ -62,12 +63,37 @@ blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
 blog.controller('contentCtrl', ['$scope', '$http',
     function ($scope, $http) {
         $scope.blogs = [];
+        $scope.tags = [];
 
-        $http.post('/ng/getList', {
-            //data: $scope.text
-        }).success(function (blogs, status, headers, config) {
-                $scope.blogs = blogs;
+        //显示标签所属文章
+        $scope.tagClick = function (tag) {
+            tag.tagged = !tag.tagged;
+            $scope.loadContent();
+        }
+
+        $scope.loadContent = function () {
+            var tagged_id = [];
+
+            for (var i in $scope.tags) {
+                if ($scope.tags[i].tagged) {
+                    tagged_id.push($scope.tags[i].id);
+                }
+            }
+
+            $http.post('/ng/getList', {
+                tagged_id: tagged_id.join(', ')
+            }).success(function (blogs, status, headers, config) {
+                    $scope.blogs = blogs;
+                });
+        }
+
+        $http.post('/tag_api/getListTotal', {
+            //cid: $routeParams.cid
+        }).success(function (tags, status, headers, config) {
+                $scope.tags = tags;
             });
+
+        $scope.loadContent();
     }
 ]);
 

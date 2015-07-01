@@ -25,6 +25,13 @@ class tag_api extends MY_Controller
         echo json_encode($query['data']);
     }
 
+    public function getListTotal()
+    {
+        $tags = $this->tag_model->getListTotal();
+
+        echo json_encode($tags);
+    }
+
     public function tag()
     {
         $request_body = file_get_contents('php://input', true);

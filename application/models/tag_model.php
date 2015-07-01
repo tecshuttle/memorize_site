@@ -63,6 +63,18 @@ class tag_model extends CI_Model
     }
 
 
+    function getListTotal()
+    {
+        $sql = "select tags.id, tags.tag, if (rec_id, count(tags.id), 0) as total"
+            . " from tags as tags left join tagged as tagged on (tags.id = tagged.tag_id and tagged.module='ng-blog') "
+            . " where tags.module='blog' group by tags.tag order by total desc";
+
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+
     function update($option)
     {
         $this->db->update($this->table, $option, array('cid' => $option['cid']));
