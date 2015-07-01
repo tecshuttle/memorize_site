@@ -48,6 +48,7 @@
                 <a class="btn" style="margin-bottom:.4em;" href="/blog">返回</a>
                 <a class="btn" style="margin-bottom:.4em;" href="./edit_blog.php">发表新文章</a>
                 <a class="btn" style="margin-bottom:.4em;" href="./edit_blog.php?cid=<?= $blog['cid'] ?>">编辑</a>
+                <a class="btn" style="margin-bottom:.4em;" href="./delete_blog.php?cid=<?= $blog['cid'] ?>">删除</a>
             <? endif; ?>
         </div>
         <!--end span3-->
