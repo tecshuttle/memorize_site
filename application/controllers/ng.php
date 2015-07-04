@@ -136,8 +136,10 @@ class ng extends CI_Controller
 
     public function save()
     {
-        $cid = $this->input->post('cid', true);
-        $text = $this->input->post('text', true);
+        $request_body = file_get_contents('php://input', true);
+        $body = json_decode($request_body, true);
+        $cid = $body['cid'];
+        $text = $body['text'];
 
         if ($cid == 0) {
             $this->insert($text);
@@ -169,6 +171,7 @@ class ng extends CI_Controller
 
         echo json_encode(array(
             'success' => true,
+            'cid' => $cid,
             'op' => 'update'
         ));
     }

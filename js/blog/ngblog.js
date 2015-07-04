@@ -12,6 +12,11 @@ blog.config(function ($routeProvider) {
             controller: 'blogCtrl'
         })
 
+        .when('/edit/:cid', {
+            templateUrl: 'templates/edit.html',
+            controller: 'editCtrl'
+        })
+
         .otherwise({
             redirectTo: '/'
         });
@@ -55,6 +60,36 @@ blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
                 tag_id: tag.id,
                 is_tagged: tag.tagged
             });
+        }
+    }
+]);
+
+blog.controller('editCtrl', ['$scope', '$http', '$routeParams', '$location',
+    function ($scope, $http, $routeParams, $location) {
+        $scope.blog = {
+            cid: 0,
+            text: '# hello'
+        };
+
+        if ($routeParams.cid !== '0') {
+            $http.post('/ng/getBlog', {
+                cid: $routeParams.cid
+            }).success(function (blog, status, headers, config) {
+                    $scope.blog = blog;
+                });
+        }
+
+        $scope.cancel = function (blog) {
+            $location.path("/blog/" + $scope.blog.cid);
+        }
+
+        $scope.save = function (blog) {
+            $http.post('/ng/save', {
+                cid: blog.cid,
+                text: blog.text
+            }).success(function (blog, status, headers, config) {
+                    $location.path("/blog/" + blog.cid);
+                });
         }
     }
 ]);
