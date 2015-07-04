@@ -41,6 +41,21 @@ class ng extends CI_Controller
         $this->load->view('footer', $data);
     }
 
+    public function test()
+    {
+        $data = array(
+            'title' => 'Test',
+            'appName' => 'blog',
+            'css' => array(),
+            'js' => array(
+                '/js/blog/test.js'
+            )
+        );
+
+        $this->load->view('header', $data);
+        $this->load->view('footer', $data);
+    }
+
     public function memo_type()
     {
         $data = array(
