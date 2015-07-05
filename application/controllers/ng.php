@@ -21,7 +21,7 @@ class ng extends CI_Controller
     public function index()
     {
         $data = array(
-            'title' => 'Blog',
+            'title' => 'Tom\'s blog',
             'appName' => 'blog',
             'css' => array(
                 '/css/bootstrap-3.1.1/css/bootstrap.min.css',
@@ -151,7 +151,7 @@ class ng extends CI_Controller
         $parse_down = new Parsedown();
 
         $data = array(
-            'title' => 'Blog abc',
+            'title' => 'Tom\'s Blog',
             'content' => $parse_down->text($blog->text),
             'css' => array(
                 '/css/bootstrap-3.1.1/css/bootstrap.min.css',

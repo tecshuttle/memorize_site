@@ -19,6 +19,7 @@
         <span class="btn" ng-click="content()" style="color: #84b76d;"><span class="glyphicon glyphicon-inbox"></span></span>
         <span ng-repeat="tag in tags" ng-class="tag.tagged ? 'tagged': ''" ng-bind="tag.tag" ng-click="tagClick(tag)"></span>
         <span class="btn" ng-click="edit()" style="color:#f90;"><span class="glyphicon glyphicon-pencil"></span></span>
+        <span class="btn" style="color:gray;"><a href="/ng/blog?id={{blog.cid}}" target="_blank"><span class="glyphicon glyphicon-link"></span></a></span>
     </div>
 
     <div ng-bind-html="blog.text | markdown" class="ng-blog"></div>
