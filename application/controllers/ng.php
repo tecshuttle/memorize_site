@@ -134,6 +134,37 @@ class ng extends CI_Controller
         echo json_encode($blog);
     }
 
+    public function blog()
+    {
+        $cid = $this->input->get('id', true);
+
+        if ($cid === false) {
+            echo '文章id没有';
+            exit;
+        }
+
+        $blog = $this->blog_model->get(array('cid' => $cid));
+
+        $tags = $this->blog_model->getTags($cid);
+        $blog->tags = $tags;
+
+        $parse_down = new Parsedown();
+
+        $data = array(
+            'title' => 'Blog abc',
+            'content' => $parse_down->text($blog->text),
+            'css' => array(
+                '/css/bootstrap-3.1.1/css/bootstrap.min.css',
+                '/css/ngblog.css'
+            ),
+            'js' => array()
+        );
+
+        $this->load->view('header', $data);
+        $this->load->view('blog/single_blog', $data);
+        $this->load->view('footer', $data);
+    }
+
     public function save()
     {
         $request_body = file_get_contents('php://input', true);
