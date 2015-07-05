@@ -22,8 +22,8 @@ blog.config(function ($routeProvider) {
         });
 });
 
-blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
-    function ($scope, $http, $routeParams) {
+blog.controller('blogCtrl', ['$scope', '$http', '$routeParams', '$location',
+    function ($scope, $http, $routeParams, $location) {
         $scope.blog = [];
         $scope.tags = [];
 
@@ -61,6 +61,14 @@ blog.controller('blogCtrl', ['$scope', '$http', '$routeParams',
                 is_tagged: tag.tagged
             });
         }
+
+        $scope.content = function () {
+            $location.path('/');
+        }
+
+        $scope.edit = function () {
+            $location.path('/edit/' + $scope.blog.cid);
+        }
     }
 ]);
 
@@ -79,6 +87,10 @@ blog.controller('editCtrl', ['$scope', '$http', '$routeParams', '$location',
                 });
         }
 
+        $scope.content = function () {
+            $location.path('/');
+        }
+
         $scope.cancel = function (blog) {
             $location.path("/blog/" + $scope.blog.cid);
         }
@@ -87,16 +99,20 @@ blog.controller('editCtrl', ['$scope', '$http', '$routeParams', '$location',
             $http.post('/ng/save', {
                 cid: blog.cid,
                 text: blog.text
-            }).success(function (blog, status, headers, config) {
-                    $location.path("/blog/" + blog.cid);
+            }).success(function (result, status, headers, config) {
+                    if (blog.cid === 0) {
+                        $location.path('/');
+                    } else {
+                        $location.path('/blog/' + blog.cid);
+                    }
                 });
         }
     }
 ]);
 
 
-blog.controller('contentCtrl', ['$scope', '$http',
-    function ($scope, $http) {
+blog.controller('contentCtrl', ['$scope', '$http', '$location',
+    function ($scope, $http, $location) {
         $scope.blogs = [];
         $scope.tags = [];
 
@@ -129,6 +145,14 @@ blog.controller('contentCtrl', ['$scope', '$http',
             });
 
         $scope.loadContent();
+
+        $scope.new = function () {
+            $location.path('/edit/0');
+        }
+
+        $scope.home = function () {
+            window.location.href = '//www.tomtalk.net';
+        }
     }
 ]);
 

@@ -25,7 +25,7 @@ class ng extends CI_Controller
             'appName' => 'blog',
             'css' => array(
                 '/css/bootstrap-3.1.1/css/bootstrap.min.css',
-                '/css/blog.css'
+                '/css/ngblog.css'
             ),
             'js' => array(
                 '/js/angular.1.3.15.js',
