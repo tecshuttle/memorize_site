@@ -38,6 +38,6 @@
     </div>
 
     <div class="edit-preview">
-        <div ng-bind-html="blog.text | markdown" class="blog-content"></div>
+        <div ng-bind-html="blog.text | markdown" class="ng-blog-preview"></div>
     </div>
 </script>

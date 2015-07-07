@@ -1,6 +1,6 @@
 html, body {
     font-size: 1em;
-    font-family: "Microsoft Yahei", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti";
+    font-family: "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
     color: #333;
 }
 
@@ -22,11 +22,32 @@ img {
     max-width: 100%;
 }
 
+div.ng-blog p, div.ng-blog-preview p {
+    margin-bottom: 1em;
+    line-height: 1.8;
+}
+
+div.ng-blog-preview {
+    padding: 0 1em;
+}
+
 pre {
     padding: 0;
     border: none;
     font-size: inherit;
     background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 1em 0em;
+}
+
+strong {
+    color: #00b050;
+}
+
+code {
+    color: #f66;
 }
 
 #textarea {
@@ -67,10 +88,6 @@ textarea:focus {
     padding: 1em;
     right: 50%;
     left: 0em;
-}
-
-code {
-    color: #f66;
 }
 
 .blog-toolbar {
@@ -179,19 +196,6 @@ span.ng-binding:hover {
     color: white;
 }
 
-h1 {
-    margin: 0.5em 0;
-}
-
-h2 {
-    margin: 0.5em 0 0.5em 0;
-    color: #333;
-}
-
-strong {
-    color: #00b050;
-}
-
 .blog-content {
     max-width: 50em;
     padding: 0 1em;
@@ -206,32 +210,58 @@ strong {
     -webkit-column-gap: 2em;
 }
 
+/* blog目录屏幕自适应分栏 */
 @media screen and (max-width: 759px) {
-    .ng-blog, .ng-blog-content {
+    .ng-blog-content {
         -webkit-column-count: 1;
     }
 }
 
 @media screen and (min-width: 760px) and (max-width: 1099px) {
-    .ng-blog, .ng-blog-content {
+    .ng-blog-content {
         -webkit-column-count: 2;
     }
 }
 
 @media screen and (min-width: 1100px) and (max-width: 1799px) {
-    .ng-blog, .ng-blog-content {
+    .ng-blog-content {
         -webkit-column-count: 3;
     }
 }
 
 @media screen and (min-width: 1800px) and (max-width: 2599px) {
-    .ng-blog, .ng-blog-content {
+    .ng-blog-content {
         -webkit-column-count: 4;
     }
 }
 
 @media screen and (min-width: 2600px) and (max-width: 4000px) {
-    .ng-blog, .ng-blog-content {
+    .ng-blog-content {
         -webkit-column-count: 5;
+    }
+}
+
+/* blog内容屏幕自适应分栏 */
+@media screen and (max-width: 999px) {
+    .ng-blog {
+        -webkit-column-count: 1;
+    }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1499px) {
+    .ng-blog {
+        -webkit-column-count: 2;
+    }
+}
+
+@media screen and (min-width: 1500px) and (max-width: 2199px) {
+    .ng-blog {
+        -webkit-column-count: 3;
+    }
+}
+
+@media screen and (min-width: 2200px) and (max-width: 4000px) {
+    .ng-blog {
+        -webkit-column-count: 4;
     }
 }
