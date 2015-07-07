@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+
+
 class ng extends CI_Controller
 {
     var $uid = 0;
