@@ -22,7 +22,7 @@
         <span class="btn" style="color:gray;"><a href="/ng/blog?id={{blog.cid}}" target="_blank"><span class="glyphicon glyphicon-link"></span></a></span>
     </div>
 
-    <div ng-bind-html="blog.text | markdown" class="ng-blog"></div>
+    <div ng-bind-html="blog.text  | show_img | markdown" class="ng-blog"></div>
 </script>
 
 <script id="templates/edit.html" type="text/ng-template">
@@ -38,6 +38,6 @@
     </div>
 
     <div class="edit-preview">
-        <div ng-bind-html="blog.text | markdown" class="ng-blog-preview"></div>
+        <div ng-bind-html="blog.text | show_img | markdown" class="ng-blog-preview"></div>
     </div>
 </script>

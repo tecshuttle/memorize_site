@@ -164,4 +164,14 @@ blog.filter('markdown', function ($sce) {
     };
 });
 
+blog.filter('show_img', function () {
+    return function (input) {
+        if (input !== undefined) {
+            input = input.replace(/http:\/\/(.+?).(jpg|jpeg|png|gif)[\n\r]/g, '<img src="//$1.$2" />');
+        }
+        return input;
+    }
+
+});
+
 //end file
