@@ -1,7 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 
-
 class ng extends CI_Controller
 {
     var $uid = 0;
@@ -83,7 +82,12 @@ class ng extends CI_Controller
     {
         $request_body = file_get_contents('php://input', true);
         $body = json_decode($request_body, true);
-        $tagged_id = $body['tagged_id'];
+
+        if (isset($body['tagged_id'])) {
+            $tagged_id = $body['tagged_id'];
+        } else {
+            $tagged_id = '';
+        }
 
         if ($tagged_id === '') {
             $blogs = $this->blog_model->getUnTagged();
@@ -107,6 +111,29 @@ class ng extends CI_Controller
             }
 
             echo json_encode($data);
+        }
+    }
+
+    public function search()
+    {
+        $request_body = file_get_contents('php://input', true);
+        $body = json_decode($request_body, true);
+        $keyword = $body['keyword'];
+
+        if ($keyword === '') {
+            $this->getList();
+            return;
+        } else {
+            $blogs = $this->blog_model->search($keyword);
+
+            foreach ($blogs as &$blog) {
+                $blog->title = $this->getTitle($blog->text);
+                unset($blog->text);
+                unset($blog->ctime);
+                unset($blog->mtime);
+            }
+
+            echo json_encode($blogs);
         }
     }
 
@@ -190,6 +217,29 @@ class ng extends CI_Controller
         );
 
         $this->blog_model->delete($option);
+    }
+
+    public function getUser()
+    {
+        $user = false;
+
+        if (isset($_SESSION['uid'])) {
+            $this->load->model('users_model');
+            $user = $this->users_model->getByID($_SESSION['uid']);
+            $_SESSION['user_name'] = $user->mail;
+
+
+        } else if (isset($_COOKIE['uid'])) {
+            $this->load->model('users_model');
+            $user = $this->users_model->getByID($_COOKIE['uid']);
+            $_SESSION['uid'] = $user->uid;
+            $_SESSION['user_name'] = $user->mail;
+        }
+
+        echo json_encode(array(
+            'success' => ($user === false ? false : true),
+            'user' => $user
+        ));
     }
 
     private function update($cid, $text)

@@ -62,6 +62,12 @@ class blog_model extends CI_Model
         }
     }
 
+    function search($keyword)
+    {
+        $sql = "select * from blog where text like '%{$keyword}%' order by ctime desc limit 50";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
     function getUnTagged()
     {

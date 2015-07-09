@@ -1,36 +1,40 @@
 <div ng-view></div>
 
+
 <script id="templates/home.html" type="text/ng-template">
     <div class="ng-tag">
-        <span class="btn" ng-click="home()" style="color:#08C;"><span class="glyphicon glyphicon-home"></span></span>
+        <a href="//www.tomtalk.net"><span class="btn"><span style="color:#08C;" class="glyphicon glyphicon-home"></span></span></a>
+        <input type="text" ng-model="keyword" ng-change="search()" class="search form-control" placeholder="搜索" />
         <span ng-repeat="tag in tags" ng-class="tag.tagged ? 'tagged': ''" ng-bind="tag.tag + ' ' + tag.total" ng-click="tagClick(tag)"></span>
-        <span class="btn" ng-click="new()" style="color:#84b76d;"><span class="glyphicon glyphicon-plus"></span></span>
+        <a href="#edit/0" ng-show="user"><span class="btn"><span style="color:#84b76d;" class="glyphicon glyphicon-plus"></span></span></a>
+        <a href="/user/login" ng-show="! user"><span class="btn"><span style="color:#84b76d;" class="glyphicon glyphicon-user"></span></span></a>
     </div>
 
     <div class="ng-blog-content">
         <p ng-repeat="blog in blogs">
-            <a href="#blog/{{blog.cid}}">{{blog.title}} </a>
+            <a href="#/{{blog.cid}}">{{blog.title}}</a>
         </p>
     </div>
 </script>
 
+
 <script id="templates/blog.html" type="text/ng-template">
     <div class="ng-tag">
-        <span class="btn" ng-click="content()" style="color: #84b76d;"><span class="glyphicon glyphicon-inbox"></span></span>
-        <span ng-repeat="tag in tags" ng-class="tag.tagged ? 'tagged': ''" ng-bind="tag.tag" ng-click="tagClick(tag)"></span>
-        <span class="btn" ng-click="edit()" style="color:#f90;"><span class="glyphicon glyphicon-pencil"></span></span>
-        <span class="btn" style="color:gray;"><a href="/ng/blog?id={{blog.cid}}" target="_blank"><span class="glyphicon glyphicon-link"></span></a></span>
+        <a href="#/"><span class="btn"><span style="color: #84b76d;" class="glyphicon glyphicon-inbox"></span></span></a>
+        <span ng-show="user" ng-repeat="tag in tags | orderBy: 'id'" ng-class="is_tagged(tag) ? 'tagged': ''" ng-bind="tag.tag" ng-click="tagClick(tag)"></span>
+        <a href="#/edit/{{blog.cid}}" ng-show="user"><span class="btn"><span style="color:#f90;" class="glyphicon glyphicon-pencil"></span></span></a>
+        <a href="/ng/blog?id={{blog.cid}}" target="_blank"><span class="btn" style="color:gray;"><span class="glyphicon glyphicon-link"></span></span></a>
     </div>
 
-    <div ng-bind-html="blog.text  | show_img | markdown" class="ng-blog"></div>
+    <div ng-bind-html="blog.text | show_img | markdown" class="ng-blog"></div>
 </script>
 
-<script id="templates/edit.html" type="text/ng-template">
 
+<script id="templates/edit.html" type="text/ng-template">
     <div class="edit-toolbar">
-        <span ng-click="content()" class="btn" style="color: #84b76d;"> <span class="glyphicon glyphicon-inbox"></span> </span>
-        <span ng-click="cancel(blog)" class="btn" style="color: gray;" ng-show="blog.cid !== 0"> <span class="glyphicon glyphicon-arrow-left"></span> </span>
-        <span ng-click="save(blog)" class="btn" style="color:#f90;"> <span class="glyphicon glyphicon-ok"></span> </span>
+        <a href="#/"><span class="btn"><span style="color: #84b76d;" class="glyphicon glyphicon-inbox"></span> </span></a>
+        <a href="#/{{blog.cid}}" ng-show="blog.cid !== 0"><span class="btn"> <span style="color: gray;" class="glyphicon glyphicon-arrow-left"></span> </span></a>
+        <span ng-click="save(blog)" class="btn" style="color:#f90;" ng-show="user"> <span class="glyphicon glyphicon-ok"></span> </span>
     </div>
 
     <div id="textarea-wrap">

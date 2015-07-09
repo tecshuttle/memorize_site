@@ -45,7 +45,7 @@ if ($host[0] == 'memo') {
     $r = 'memo';
 }
 if ($host[0] == 'blog') {
-    $r = 'vue';
+    $r = 'ng';
 }
 if ($host[0] == 'todo') {
     $r = 'todo';
