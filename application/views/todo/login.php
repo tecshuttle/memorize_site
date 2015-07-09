@@ -21,9 +21,10 @@
 
 <body>
 
-<div class="col-xs-12 col-sm-12" style="text-align: center;margin-bottom: 2em;">
-    <h2> Simple Todo List</h2>
-    <h2> 时间，看起来多，用起来少！ </h2>
+<div class="col-xs-12 col-sm-12" style="font-size: 2em;text-align: center;margin-bottom: 1em;">
+    <p> Simple Todo List
+
+    <p> 时间，看起来多，用起来少！
 </div>
 
 
