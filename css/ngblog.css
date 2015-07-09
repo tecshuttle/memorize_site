@@ -198,8 +198,9 @@ span.ng-binding:hover {
 input.search {
     width: 10em;
     display: inline-block;
-    line-height: 2em;
-    height: 2em;
+    font-size: 0.9em;
+    line-height: 1.4em;
+    height: 1.7em;
     border-radius: 1em;
 }
 
