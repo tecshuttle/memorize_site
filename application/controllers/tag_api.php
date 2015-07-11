@@ -22,12 +22,19 @@ class tag_api extends MY_Controller
 
         $query = $this->tag_model->get($option);
 
-        echo json_encode($query['data']);
+        $tags = $query['data'];
+
+        echo json_encode($tags);
     }
 
     public function getListTotal()
     {
         $tags = $this->tag_model->getListTotal();
+
+        foreach ($tags as &$tag) {
+            $tag->id = (int)$tag->id;
+            $tag->total = (int)$tag->total;
+        }
 
         echo json_encode($tags);
     }

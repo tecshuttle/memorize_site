@@ -80,7 +80,14 @@ class blog_model extends CI_Model
     {
         $sql = "select * from tagged where module='ng-blog' and rec_id = $cid";
         $query = $this->db->query($sql);
-        return $query->result();
+
+        $tags = $query->result();
+
+        foreach ($tags as &$tag) {
+            $tag->tag_id = (int)$tag->tag_id;
+        }
+
+        return $tags;
     }
 
     //查找打上了指定标记的文章，支持多标签并集。
