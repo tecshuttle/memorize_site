@@ -3,6 +3,7 @@ var blog = angular.module('blog', ['ngSanitize', 'ngRoute'])
         this.$get = function ($http, $rootScope) { // injectables go here
             var self = this;
 
+            $rootScope.title = '';
             $rootScope.blogs = [];  //博客列表
             $rootScope.tags = [];   //标签列表
             $rootScope.blog = {};   //当前选择博客
@@ -26,6 +27,7 @@ var blog = angular.module('blog', ['ngSanitize', 'ngRoute'])
 
                         if (blog.cid === cid && blog.text !== undefined) {
                             $rootScope.blog = blog;
+                            $rootScope.title = service.getTitle(blog.text);
                             return;
                         }
                     }
@@ -34,6 +36,7 @@ var blog = angular.module('blog', ['ngSanitize', 'ngRoute'])
                         cid: cid
                     }).success(function (blog, status, headers, config) {
                             $rootScope.blog = blog;
+                            $rootScope.title = service.getTitle(blog.text);
                             service.setBlog(cid, blog);
                         });
                 },
@@ -55,9 +58,19 @@ var blog = angular.module('blog', ['ngSanitize', 'ngRoute'])
                 },
                 getTags: function () {
                     $http.post('/tag_api/getListTotal', {
-                        //cid: $routeParams.cid
+                        //none
                     }).success(function (tags, status, headers, config) {
                             $rootScope.tags = tags;
+                        });
+                },
+                recountTags: function () {
+                    $http.post('/tag_api/getListTotal', {
+                        //none
+                    }).success(function (tags, status, headers, config) {
+                            //仅更新旧标签的数量
+                            for (var i in $rootScope.tags) {
+                                $rootScope.tags[i].total = tags[i].total;
+                            }
                         });
                 },
                 search: function (keyword) {
@@ -68,6 +81,9 @@ var blog = angular.module('blog', ['ngSanitize', 'ngRoute'])
                     }).success(function (blogs, status, headers, config) {
                             $rootScope.blogs = blogs;
                         });
+                },
+                getTitle: function (text) {
+                    return text.split('\n')[0].substr(1);
                 }
             };
 
@@ -106,8 +122,10 @@ blog.config(function ($routeProvider) {
 });
 
 
-blog.controller('contentCtrl', ['$scope', '$http', '$location', '$timeout', 'blogService',
-    function ($scope, $http, $location, $timeout, blogService) {
+blog.controller('contentCtrl', ['$scope', '$rootScope', '$http', '$location', '$timeout', 'blogService',
+    function ($scope, $rootScope, $http, $location, $timeout, blogService) {
+        $rootScope.title = 'tom-blog';
+
         //显示标签所属文章
         $scope.tagClick = function (tag) {
             tag.tagged = !tag.tagged;
@@ -167,7 +185,7 @@ blog.controller('blogCtrl', ['$scope', '$http', '$routeParams', '$location', 'bl
                 tag_id: tag.id,
                 is_tagged: (idx === false ? true : false)  //idx=false，表明当前文章未打该tag
             }).success(function (result, status, headers, config) {
-                    blogService.getTags(); //标签有变动，会影响标签下文章的统计，更新标签文章数量
+                    blogService.recountTags(); //标签有变动，会影响标签下文章的统计，更新标签文章数量
                     blogService.getContent(); //标签有变动，会影响标签下文章的统计，更新标签文章数量
                 });
         }
@@ -177,7 +195,11 @@ blog.controller('blogCtrl', ['$scope', '$http', '$routeParams', '$location', 'bl
 blog.controller('editCtrl', ['$scope', '$http', '$routeParams', '$location', 'blogService',
     function ($scope, $http, $routeParams, $location, blogService) {
 
-        if ($routeParams.cid !== '0') blogService.getBlog($routeParams.cid); // cid = 0 是新建blog
+        if ($routeParams.cid === '0') {// cid = 0 是新建blog
+            $scope.blog = {};
+        } else {
+            blogService.getBlog($routeParams.cid);
+        }
 
         $scope.save = function (blog) {
             $http.post('/ng/save', {

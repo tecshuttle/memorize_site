@@ -67,7 +67,7 @@ class tag_model extends CI_Model
     {
         $sql = "select tags.id, tags.tag, if (rec_id, count(tags.id), 0) as total"
             . " from tags as tags left join tagged as tagged on (tags.id = tagged.tag_id and tagged.module='ng-blog') "
-            . " where tags.module='blog' group by tags.tag order by total desc";
+            . " where tags.module='blog' group by tags.tag order by tags.id";
 
         $query = $this->db->query($sql);
 
