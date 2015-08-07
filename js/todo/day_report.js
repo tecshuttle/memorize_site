@@ -52,7 +52,7 @@ function week_chart(direct) {
         type: "POST",
         data: {
             day: day.Format('yyyy-MM-dd'),
-            code: 'car'
+            code: $.getUrlParam('project_code')
         },
         dataType: "json",
         success: function (result) {
