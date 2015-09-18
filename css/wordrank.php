@@ -1,12 +1,46 @@
 <?php
 $start = microtime(true); //开始计时
 
+//$reg_word = '/\w+(-\r?\n?\w+)?/';
+$reg_word = '/[a-zA-Z]{3,}+(-\r?\n?\w+)?/';
+
+//测试正测取值范围，去除包含数字的词
+if (false) {
+    $lines = file('test_word.txt');
+
+    $new_words = array();
+
+    foreach ($lines as $line) {
+        if (preg_match_all($reg_word, $line, $matches)) {
+            $words = $matches[0];
+
+            foreach ($words as $word) {
+                $word = strtolower($word);
+
+                if (isset($old_words[$word])) {
+                    continue;
+                }
+
+                if (isset($new_words[$word])) {
+                    $new_words[$word]++;
+                } else {
+                    $new_words[$word] = 1;
+                }
+            }
+        }
+    }
+
+    print_r($new_words);
+    exit;
+}
+
+
 //读取已熟知单词
 $old_words = array();
 $lines = file('old_word.txt');
 
 foreach ($lines as $line) {
-    if (preg_match_all('/\w+(-\r?\n?\w+)?/', $line, $matches)) {
+    if (preg_match_all($reg_word, $line, $matches)) {
         $words = $matches[0];
 
         foreach ($words as $word) {
@@ -29,7 +63,7 @@ $new_words = array();
 $i_words = 0;
 
 foreach ($lines as $line) {
-    if (preg_match_all('/\w+(-\r?\n?\w+)?/', $line, $matches)) {
+    if (preg_match_all($reg_word, $line, $matches)) {
         $words = $matches[0];
 
         foreach ($words as $word) {
