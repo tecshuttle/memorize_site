@@ -1,3 +1,9 @@
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+</head>
+<body>
+
 <?php
 $start = microtime(true); //开始计时
 
