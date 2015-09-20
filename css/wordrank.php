@@ -57,7 +57,7 @@ foreach ($lines as $line) {
 
 //读取新单词
 //$lines = file('wordtest.txt');
-$lines = file('when_you_are_expecting.txt');
+$lines = file('your_book.txt');
 
 $new_words = array();
 $i_words = 0;
