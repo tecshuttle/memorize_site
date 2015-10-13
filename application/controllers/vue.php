@@ -46,14 +46,14 @@ class vue extends CI_Controller
         if (isset($_SESSION['uid'])) {
             $this->load->model('users_model');
             $user = $this->users_model->getByID($_SESSION['uid']);
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
 
 
         } else if (isset($_COOKIE['uid'])) {
             $this->load->model('users_model');
             $user = $this->users_model->getByID($_COOKIE['uid']);
             $_SESSION['uid'] = $user->uid;
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
         }
 
         echo json_encode(array(

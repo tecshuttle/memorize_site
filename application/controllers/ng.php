@@ -44,6 +44,12 @@ class ng extends CI_Controller
 
     public function test()
     {
+
+        $str =  '(' .  chr(4) .  ')';
+        var_dump($str);
+
+        echo strtotime('2015-07-09 20:02');
+
         $data = array(
             'title' => 'Test',
             'appName' => 'blog',
@@ -226,14 +232,14 @@ class ng extends CI_Controller
         if (isset($_SESSION['uid'])) {
             $this->load->model('users_model');
             $user = $this->users_model->getByID($_SESSION['uid']);
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
 
 
         } else if (isset($_COOKIE['uid'])) {
             $this->load->model('users_model');
             $user = $this->users_model->getByID($_COOKIE['uid']);
             $_SESSION['uid'] = $user->uid;
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
         }
 
         echo json_encode(array(

@@ -34,10 +34,12 @@ class users_model extends CI_Model
     function login($email, $password)
     {
         $pwd = md5($password);
-        $sql = "SELECT * from users WHERE mail = '$email' and password = '$pwd'";
+        $sql = "SELECT * from users WHERE email = '$email' and password = '$pwd'";
+
 
         $query = $this->db->query($sql);
         $data = $query->result();
+
 
         if (count($data) == 0) {
             return false;

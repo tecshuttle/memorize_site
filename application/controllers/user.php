@@ -42,7 +42,11 @@ class user extends CI_Controller
     public function register_submit()
     {
         $this->load->model('users_model');
-        $this->users_model->insert($_POST);
+
+        $this->users_model->insert(array(
+            'email' => $this->input->post('email', true),
+            'password' => md5($this->input->post('pwd', true))
+        ));
 
         header('Location: /user/login');
     }
@@ -73,7 +77,7 @@ class user extends CI_Controller
         if ($user) {
             session_start();
             $_SESSION['uid'] = $user->uid;
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
 
             $expire = time() + 30 * 86400; // 30 day
             setcookie('uid', $user->uid, $expire, '/');
