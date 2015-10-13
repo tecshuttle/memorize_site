@@ -98,14 +98,14 @@ class todo extends CI_Controller
         if (isset($_SESSION['uid'])) {
             $this->load->model('users_model');
             $user = $this->users_model->getByID($_SESSION['uid']);
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
 
             return $user;
         } else if (isset($_COOKIE['uid'])) {
             $this->load->model('users_model');
             $user = $this->users_model->getByID($_COOKIE['uid']);
             $_SESSION['uid'] = $user->uid;
-            $_SESSION['user_name'] = $user->mail;
+            $_SESSION['user_name'] = $user->email;
 
             return $user;
         } else {
@@ -409,22 +409,22 @@ class todo extends CI_Controller
     {
         $work_day = array(
             array('job_name' => '睡觉-早', 'time_long' => 3600 * 4, 'job_type_id' => 4),
-            array('job_name' => '百词斩', 'time_long' => 3600, 'job_type_id' => 6),
+            array('job_name' => '扇贝', 'time_long' => 3600, 'job_type_id' => 6),
             array('job_name' => '洗漱、穿衣', 'time_long' => 1800, 'job_type_id' => 1),
-            array('job_name' => '通勤', 'time_long' => 3600 + (18 * 60), 'job_type_id' => 7),
+            array('job_name' => '通勤', 'time_long' => 3600 + (12 * 60), 'job_type_id' => 7),
 
-            array('job_name' => '早餐', 'time_long' => (24 * 60), 'job_type_id' => 1),
-            array('job_name' => '午餐、午休', 'time_long' => 3600, 'job_type_id' => 1),
+            array('job_name' => '早餐', 'time_long' => (12 * 60), 'job_type_id' => 1),
+            array('job_name' => '午餐、午休', 'time_long' => 3600 + (18 * 60), 'job_type_id' => 1),
 
             array('job_name' => '晚餐', 'time_long' => 1800, 'job_type_id' => 1),
-            array('job_name' => '下班回家', 'time_long' => 3600 + (18 * 60), 'job_type_id' => 7),
+            array('job_name' => '下班回家', 'time_long' => 3600 + (12 * 60), 'job_type_id' => 7),
             array('job_name' => '晚上休息', 'time_long' => 3600, 'job_type_id' => 0),
             array('job_name' => '睡觉-晚', 'time_long' => 3600 * 2.5, 'job_type_id' => 4)
         );
 
         $weekend = array(
-            array('job_name' => '睡觉-早', 'time_long' => 3600 * 5, 'job_type_id' => 4),
-            array('job_name' => '百词斩', 'time_long' => 3600, 'job_type_id' => 6),
+            array('job_name' => '睡觉-早', 'time_long' => 3600 * 4, 'job_type_id' => 4),
+            array('job_name' => '扇贝', 'time_long' => 3600, 'job_type_id' => 6),
             array('job_name' => '晚上休息', 'time_long' => 3600, 'job_type_id' => 0),
             array('job_name' => '睡觉-晚', 'time_long' => 3600 * 2.5, 'job_type_id' => 4)
         );
