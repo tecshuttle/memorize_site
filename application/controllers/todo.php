@@ -142,7 +142,6 @@ class todo extends CI_Controller
         $query = $this->db->query($sql);
 
         echo json_encode($query->result());
-
     }
 
     /**计算job的开始时间
@@ -288,6 +287,8 @@ class todo extends CI_Controller
             );
 
             $this->db->update($this->todo_lists, $data, array('id' => $data['id']));
+
+            $this->reorder_rest_job_start_time($all_jobs[0]->id); //后续任务顺延
         }
 
         //接前置任务，后续任务顺延
