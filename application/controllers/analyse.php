@@ -112,6 +112,20 @@ class analyse extends CI_Controller
         $this->load->view('todo/analyse_week_view', $data);
     }
 
+    public function work_pie()
+    {
+        $data = array(
+            'title' => 'Analyse work pie',
+            'user_name' => $_SESSION['user_name'],
+            'css' => array(),
+            'js' => array(
+                '/js/analyse_work_pie.js'
+            )
+        );
+
+        $this->load->view('todo/analyse_work_pie', $data);
+    }
+
     public function work_week_report()
     {
         $data = array(
@@ -246,6 +260,36 @@ class analyse extends CI_Controller
         $data = $query->result();
 
         echo json_encode($data);
+    }
+
+    public function get_work_pie()
+    {
+        $start = strtotime('2015-01-01');
+        $end = strtotime('2015-12-31');
+
+        //工作类型
+        $sql = $sql = "SELECT task_type_id, SUM(time_long) AS time_long FROM $this->todo_lists "
+            . " WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $start AND start_time <= $end)"
+            . " GROUP BY task_type_id ORDER BY task_type_id";
+        $query = $this->db->query($sql);
+
+        $work_type = $query->result();
+
+        //工作项目
+        $sql = "SELECT LEFT(job_name, POSITION(': ' IN job_name) - 1) AS code, SUM(time_long) AS total "
+            . ", IF(POSITION(': ' IN job_name) > 0 , 1, 0) as is_code "
+            . "FROM todo_lists "
+            . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $start AND start_time <= $end) "
+            . "GROUP BY code ORDER BY is_code DESC, total DESC";
+
+        $query = $this->db->query($sql);
+
+        $projects = $query->result();
+
+        echo json_encode(array(
+            'work_type' => $work_type,
+            'projects' => $projects,
+        ));
     }
 
     public function getPieDataOfTaskType()
