@@ -1,0 +1,31 @@
+#toolBar {
+    padding: 5px;
+    background-color: white;
+    width: 100%;
+    border-bottom: 1px solid #aaa;
+}
+
+#Gallery {
+
+}
+
+#GalleryList {
+    padding-top: 50px;
+}
+
+#GalleryList div.photo {
+    width: 210px;
+    display: inline-block;
+    text-align: center;
+}
+
+#GalleryList div.selected {
+    background-color: #c3daf9;
+}
+
+#GalleryList div.photo span {
+    width: 200px;
+    overflow: hidden;
+    margin: 5px 0px;
+    display: inline-block;
+}

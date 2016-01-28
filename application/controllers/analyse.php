@@ -36,6 +36,10 @@ class analyse extends CI_Controller
             array('code' => 'wx', 'name' => '移动互联网')
         );
 
+        if ($_SESSION['uid'] != 1) {
+            $projects = array();
+        }
+
         foreach ($projects as &$p) {
             $p['total_hours'] = number_format($this->todo_model->get_project_total_hour($p['code']), 2);
             $p['day_hours'] = $this->todo_model->get_project_day_hours($p['code']);
