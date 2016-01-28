@@ -1,10 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Gallery</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Gallery</title>
     <link rel="stylesheet" href="/css/bootstrap-3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/gallery.css">
 </head>
@@ -26,23 +25,32 @@
     var GalleryList = React.createClass({
         getInitialState: function() {
           return {
-              hide_name: false,
-              batch_edit: false,
-              tags: null,
-              is_list_view: true,
-              photo: null,
-              GalleryList: null,
-              idsSelected: [],
-              unSelectList: []
+              user: null,           //用户数据，判断操作权限
+              hide_name: false,     //开关：隐藏文件名
+              batch_edit: false,    //开关：批量选择
+              is_list_view: true,   //开关：查看大图
+              photo: null,          //查看大图，当前图片
+              tags: null,           //分类列表
+              GalleryList: null,    //图片列表
+              idsSelected: [],      //选中图片id
+              unSelectList: []      //未选中的图片列表
           };
         },
 
         componentDidMount: function() {
             this._switchTag(0);
 
+            $.post('/ng/getUser', {}, function(result) {
+                if (this.isMounted()) {
+                    this.setState({
+                        user: (result.success ? result.user : null)
+                    });
+                }
+            }.bind(this), 'json');
+
             $.post('/gallery/getTags', {}, function(result) {
                 if (this.isMounted()) {
-                    result.data.unshift({id: 0, tag: '选择分类'});
+                    result.data.unshift({id: 0, tag: '未分类'});
 
                     this.setState({
                         tags: result.data
@@ -81,7 +89,7 @@
             if (! this.state.is_list_view && this.state.photo !== null) {
                 var photo = this.state.photo;
                 return (
-                    <div>
+                    <div className="big-view-photo">
                         <img src={'/uploads/' + photo.download} onDoubleClick={me._onExitBigView}/>
                     </div>
                 );
@@ -136,27 +144,38 @@
                 <div>
                     <div id="toolBar" data-spy="affix" data-offset-top="0">
                         <div className="form-inline">
-                            <input id="fileupload" className="form-control" type="file" name="files[]" data-url="/gallery/batch_submit" multiple />
-                            <button className="form-control" onClick={me._onDelete}>Delete</button>
+                            <div className="form-group">
+                                <input type="file" id="fileupload" className="form-control"  name="files[]" data-url="/gallery/batch_submit" multiple />
+                            </div>
 
-                            <select className="form-control" onChange={me._onTagChange}>
-                                {option_tag}
-                            </select>
+                            <div className="form-group">
+                                <label>{this.state.idsSelected.length > 0 ? '移动到' : '归类'}</label>
+                                <select className="form-control" onChange={me._onTagChange}>
+                                    {option_tag}
+                                </select>
+                            </div>
 
-                            <label>
-                               <input type="checkbox" selected={is_selected_hide_file_name} className="form-control" onClick={me._onHideFileName} /> 隐藏文件名
-                            </label>
+                            <div className={'form-group ' + ((this.state.idsSelected.length > 0 && this.state.user !== null) ? '' : 'hide')}>
+                                <button type="button" className="btn btn-danger" onClick={me._onDelete}>Delete</button>
+                            </div>
 
-                            <label>
-                               <input type="checkbox" selected={is_selected_batch_edit} className="form-control" onClick={me._onBatchEdit} /> 批量编辑
-                            </label>
+                            <div className="checkbox">
+                                <label>
+                                   <input type="checkbox" selected={is_selected_hide_file_name} onClick={me._onHideFileName} /> 隐藏文件名
+                                </label>
+                            </div>
+
+                            <div className="checkbox">
+                                <label>
+                                   <input type="checkbox" selected={is_selected_batch_edit} onClick={me._onBatchEdit} /> 批量选择
+                                </label>
+                            </div>
 
                             <span>{download_url}</span>
 
                             <span>{count_selected}</span>
                         </div>
                     </div>
-
                     <div id="GalleryList">{list}</div>
                 </div>
             );
