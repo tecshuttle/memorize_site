@@ -69,9 +69,17 @@
     }
 }
 
-@media screen and (min-width: 1729px) and (max-width: 5000px) {
+@media screen and (min-width: 1729px) and (max-width: 1919px) {
     #GalleryList {
         width: 1707px;
+        margin: 0px auto;
+        padding-top: 52px;
+    }
+}
+
+@media screen and (min-width: 1920px) and (max-width: 5000px) {
+    #GalleryList {
+        width: 1902px;
         margin: 0px auto;
         padding-top: 52px;
     }
@@ -82,7 +90,7 @@
     display: inline-block;
     text-align: center;
     border: 3px solid white;
-    margin: 0px 5px 5px 0px;
+    margin: 0px 3px 3px 0px;
 }
 
 #GalleryList div.photo img {
