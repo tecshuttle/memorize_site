@@ -10,6 +10,30 @@ div#lifeMap div.month {
     text-align: center;
 }
 
+div#lifeMap div.year {
+    width: 20px;
+    display: inline-block;
+    background-color: green;
+    border: 1px solid white;
+    text-align: center;
+}
+
+div#lifeMap div.monthInYear {
+    width: 20px;
+    display: inline-block;
+    background-color: green;
+    border: 1px solid white;
+    text-align: center;
+}
+
+div#lifeMap div.day {
+    width: 20px;
+    display: inline-block;
+    background-color: green;
+    border: 1px solid white;
+    text-align: center;
+}
+
 div#lifeMap div.past {
     background-color: gray;
 }
