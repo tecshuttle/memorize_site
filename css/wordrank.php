@@ -8,7 +8,7 @@
 $start = microtime(true); //开始计时
 
 //$reg_word = '/\w+(-\r?\n?\w+)?/';
-$reg_word = '/[a-zA-Z]{3,}+(-\r?\n?\w+)?/';
+$reg_word = '/[a-zA-Z]{4,}+(-\r?\n?\w+)?/';
 
 //测试正测取值范围，去除包含数字的词
 if (false) {
