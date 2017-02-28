@@ -82,6 +82,7 @@ function job_item_click(obj) {
                 var job = result.job;
                 $('#myModal').modal();
                 $('#job_id').val(job.id);
+                $('#project_id').val(job.project_id);
                 $('#job_name').val(job.job_name);
                 $('input:radio[name=job_type_id]')[job.job_type_id].checked = true;
 
