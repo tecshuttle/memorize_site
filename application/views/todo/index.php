@@ -85,14 +85,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">任务名称</label>
-
-                        <div class="col-sm-10">
-                            <input type="input" class="form-control" id="job_name" placeholder="任务名称">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="col-sm-2 control-label">任务类型</label>
 
                         <div class="col-sm-10">
@@ -140,6 +132,14 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">任务名称</label>
+
+                        <div class="col-sm-10">
+                            <input type="input" class="form-control" id="job_name" placeholder="任务名称">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">任务说明</label>
 
                         <div class="col-sm-10">
@@ -147,9 +147,8 @@
                         </div>
                     </div>
                 </form>
-
-
             </div>
+            
             <div class="modal-footer" style="text-align: left;">
                 <button type="button" class="btn btn-success" id="job_done_btn" data-dismiss="modal">完成</button>
                 <button type="button" class="btn btn-primary" id="job_save_btn" data-dismiss="modal"
