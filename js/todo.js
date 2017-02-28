@@ -127,6 +127,7 @@ function job_item_click(obj) {
 function get_form_value() {
 
     var job_id = $('#job_id').val();
+    var project_id = $('#project_id').val();
     var job_name = $('#job_name').val();
     var job_type_id = $("input[name=job_type_id]:checked").val()
     var task_type_id = $("input[name=task_type_id]:checked").val()
@@ -134,6 +135,7 @@ function get_form_value() {
     var job_desc = $('#job_desc').val();
 
     var data = {
+        project_id: project_id,
         id: job_id,
         job_name: job_name,
         job_type_id: job_type_id,
@@ -247,7 +249,7 @@ function set_day_title() {
     }
 
     //循环计算本周日期
-    var week_name = { 1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六', 0: '周日' };
+    var week_name = {1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六', 0: '周日'};
 
     for (var i = 0; i < 7; i++) {
         var day1 = new Date(day1_ms);
@@ -314,7 +316,14 @@ function load_todo_list() {
                     }
 
                     list += '<li class="' + is_done + '" rec_id="' + a.id + '" ' + popover + '>';
-                    list += a.job_name + (a.job_desc === '' ? '' : '...');
+
+                    var job_text = a.job_name + (a.job_desc === '' ? '' : '...');
+
+                    if (a.project_id === '0') {
+                        list += job_text;
+                    } else {
+                        list += '<b>' + job_text + '</b>';
+                    }
 
                     var color_set = ['#dddddd', '#7cb5ec', '#90ed7d', '#f7a35c', '#058DC7', '#50B432', '#ED561B', '#DDDF00'];
                     var badge_color = ' style="background-color: ' + color_set[a.job_type_id] + ';" ';
@@ -325,7 +334,7 @@ function load_todo_list() {
 
                 var day_job_time = '<span class="day_job_time">' + (done / 3600).toFixed(1) + '/' + (total / 3600).toFixed(1) + '</span>';
                 $('#day_title' + i).html(day_job_time);
-                if (list === '' && project_code ==='') {
+                if (list === '' && project_code === '') {
                     list = '<button class="btn btn-warning btn-xs" onclick="init_day(this, \'' + week_date + '\', ' + i + ');">初始化</button>';
                 }
                 $('#day' + i).html(list);

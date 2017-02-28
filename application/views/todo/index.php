@@ -63,6 +63,19 @@
                     <input type="hidden" id="job_id" value="0">
 
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">归属项目</label>
+
+                        <div class="col-sm-10">
+                            <select class="form-control" id="project_id" style="padding:4px 7px;">
+                                <option value="0">无</option>
+                                <?php foreach ($projects as $p): ?>
+                                    <option value="<?= $p->id ?>"><?= $p->name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">任务名称</label>
 
                         <div class="col-sm-10">
@@ -92,7 +105,8 @@
                         <div class="col-sm-10">
                             <?php foreach ($work_type as $item): ?>
                                 <label class="radio-inline">
-                                    <input type="radio" name="task_type_id" value="<?= $item['id'] ?>" <?= ($item['id'] == 0 ? 'checked' : '') ?>> <?= $item['name'] ?>
+                                    <input type="radio" name="task_type_id"
+                                           value="<?= $item['id'] ?>" <?= ($item['id'] == 0 ? 'checked' : '') ?>> <?= $item['name'] ?>
                                 </label>
                             <?php endforeach; ?>
                         </div>

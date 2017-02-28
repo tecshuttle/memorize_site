@@ -3,6 +3,7 @@
 class todo extends CI_Controller
 {
     var $todo_lists = 'todo_lists';
+    var $todo_projects = 'todo_projects';
     var $uid = 0;
 
     function __construct()
@@ -26,11 +27,12 @@ class todo extends CI_Controller
         }
 
         $data = array(
-            'menu' => 'about_us',
+            'menu'      => 'about_us',
             'work_type' => $this->get_work_type(),
             'user_name' => $_SESSION['user_name'],
-            'css' => array(),
-            'js' => array(
+            'projects'  => $this->get_projects(),
+            'css'       => array(),
+            'js'        => array(
                 '/assets/js/scroll.js'
             )
         );
@@ -38,10 +40,17 @@ class todo extends CI_Controller
         $this->load->view('todo/index', $data);
     }
 
+    private function get_projects()
+    {
+        $sql = "SELECT * FROM $this->todo_projects WHERE user_id= {$this->uid} ORDER BY id ASC";
+
+        return $this->db->query($sql)->result();
+    }
+
     public function test()
     {
         $request_body = file_get_contents('php://input', true);
-        $post = json_decode($request_body, true);
+        $post         = json_decode($request_body, true);
 
         $result = array(
             'success' => true
@@ -86,8 +95,8 @@ class todo extends CI_Controller
 
         $data = array(
             'user_name' => $_SESSION['user_name'],
-            'css' => array(),
-            'js' => array()
+            'css'       => array(),
+            'js'        => array()
         );
 
         $this->load->view('todo/day', $data);
@@ -97,14 +106,14 @@ class todo extends CI_Controller
     {
         if (isset($_SESSION['uid'])) {
             $this->load->model('users_model');
-            $user = $this->users_model->getByID($_SESSION['uid']);
+            $user                  = $this->users_model->getByID($_SESSION['uid']);
             $_SESSION['user_name'] = $user->email;
 
             return $user;
         } else if (isset($_COOKIE['uid'])) {
             $this->load->model('users_model');
-            $user = $this->users_model->getByID($_COOKIE['uid']);
-            $_SESSION['uid'] = $user->uid;
+            $user                  = $this->users_model->getByID($_COOKIE['uid']);
+            $_SESSION['uid']       = $user->uid;
             $_SESSION['user_name'] = $user->email;
 
             return $user;
@@ -116,8 +125,8 @@ class todo extends CI_Controller
     public function get_jobs_of_week()
     {
 
-        $day = $this->input->post('day', true);
-        $job_type_id = $this->input->post('job_type_id', true);
+        $day          = $this->input->post('day', true);
+        $job_type_id  = $this->input->post('job_type_id', true);
         $project_code = $this->input->post('project_code', true);
 
         $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, $job_type_id, $project_code, $this->uid);
@@ -134,7 +143,7 @@ class todo extends CI_Controller
         $day = $this->input->post('day', true);
 
         $start = strtotime($day);
-        $end = $start + 3600 * 24 - 1;
+        $end   = $start + 3600 * 24 - 1;
 
         $sql = "SELECT * FROM $this->todo_lists WHERE start_time >= $start AND start_time <= $end"
             . " ORDER BY start_time ASC";
@@ -151,7 +160,7 @@ class todo extends CI_Controller
     public function add_job()
     {
         //取得任务当天的开始时间
-        $week = $this->f->get_time_range_of_week($this->input->post('week_date', true));
+        $week  = $this->f->get_time_range_of_week($this->input->post('week_date', true));
         $i_day = $this->input->post('i_day', true);
 
         if ($i_day == 0) {
@@ -167,18 +176,18 @@ class todo extends CI_Controller
         }
 
         $data = array(
-            'user_id' => $this->uid,
-            'job_name' => '#',
+            'user_id'    => $this->uid,
+            'job_name'   => '#',
             'start_time' => $start_time,
-            'time_long' => 60 * 60 //任务耗时默认1小时
+            'time_long'  => 60 * 60 //任务耗时默认1小时
         );
 
         $this->db->insert($this->todo_lists, $data);
 
         echo json_encode(array(
-            'success' => true,
+            'success'    => true,
             'start_time' => date('Y-m-d H:i:s', $start_time),
-            'id' => $this->db->insert_id()
+            'id'         => $this->db->insert_id()
         ));
     }
 
@@ -188,18 +197,19 @@ class todo extends CI_Controller
 
         echo json_encode(array(
             'success' => true,
-            'job' => $this->get_job_by_id($id)
+            'job'     => $this->get_job_by_id($id)
         ));
     }
 
     public function job_edit()
     {
         $data = array(
-            'id' => $this->input->post('id', true),
-            'job_name' => $this->input->post('job_name', true),
+            'project_id'  => $this->input->post('project_id', true),
+            'id'          => $this->input->post('id', true),
+            'job_name'    => $this->input->post('job_name', true),
             'job_type_id' => $this->input->post('job_type_id', true),
-            'time_long' => $this->input->post('time_long', true),
-            'job_desc' => $this->input->post('job_desc', true)
+            'time_long'   => $this->input->post('time_long', true),
+            'job_desc'    => $this->input->post('job_desc', true)
         );
 
         $data['task_type_id'] = ($data['job_type_id'] == 3 ? $this->input->post('task_type_id', true) : 0);
@@ -218,7 +228,7 @@ class todo extends CI_Controller
             //如果是当日任务，列在完成队列尾部
             if (!$start_time) {
                 //取最后一个完成的任务
-                $cul_job = $this->get_job_by_id($data['id']);
+                $cul_job  = $this->get_job_by_id($data['id']);
                 $job_date = date('Y-m-d', $cul_job->start_time);
 
                 $last_done_job = $this->get_last_done_job($job_date);
@@ -244,19 +254,19 @@ class todo extends CI_Controller
      */
     public function move_job()
     {
-        $id = $this->input->post('id', true); //取job ID
+        $id          = $this->input->post('id', true); //取job ID
         $prev_job_id = $this->input->post('prev_job_id', true);
         $next_job_id = $this->input->post('next_job_id', true);
 
         //没有前置任务
         if ($prev_job_id == 0) {
             //当前任务，全部移到当天结束前最后时刻
-            $day = $this->get_time_range_of_day();
+            $day      = $this->get_time_range_of_day();
             $all_jobs = $this->all_jobs_of_day();
 
             foreach ($all_jobs as $key => $row) {
                 $data = array(
-                    'id' => $row->id,
+                    'id'         => $row->id,
                     'start_time' => $day->end - count($all_jobs) + $key
                 );
 
@@ -265,7 +275,7 @@ class todo extends CI_Controller
 
             //把当前任务，放到本日最前面
             $data = array(
-                'id' => $id,
+                'id'         => $id,
                 'start_time' => $day->start
             );
 
@@ -282,7 +292,7 @@ class todo extends CI_Controller
 
             //当前任务，放在它后面
             $data = array(
-                'id' => $id,
+                'id'         => $id,
                 'start_time' => $last_job->start_time + 1
             );
 
@@ -294,18 +304,18 @@ class todo extends CI_Controller
         //接前置任务，后续任务顺延
         if ($prev_job_id > 0 AND $next_job_id > 0) {
             //取任务当天的结束时间
-            $job = $this->get_job_by_id($id);
-            $day_str = date('Y-m-d', $job->start_time);
+            $job        = $this->get_job_by_id($id);
+            $day_str    = date('Y-m-d', $job->start_time);
             $end_of_day = strtotime($day_str) + 3600 * 24 - 1;
 
             //当前任务以下，全部移到当天结束前最后时刻
-            $all_jobs = $this->siblings_of_job($id);
+            $all_jobs  = $this->siblings_of_job($id);
             $do_marker = false;
             foreach ($all_jobs as $key => $row) {
 
                 if ($do_marker) {
                     $data = array(
-                        'id' => $row->id,
+                        'id'         => $row->id,
                         'start_time' => $end_of_day - count($all_jobs) + $key
                     );
 
@@ -319,8 +329,8 @@ class todo extends CI_Controller
 
             //当前任务，移到前置任务后
             $prev_job = $this->get_job_by_id($prev_job_id);
-            $data = array(
-                'id' => $id,
+            $data     = array(
+                'id'         => $id,
                 'start_time' => $prev_job->start_time + 1
             );
 
@@ -344,7 +354,7 @@ class todo extends CI_Controller
             . " ORDER BY start_time ASC";
 
         $query = $this->db->query($sql);
-        $data = $query->result();
+        $data  = $query->result();
 
         $str = "日期,任务,耗时（分钟）\n";
         $str = iconv('utf-8', 'gb2312', $str);
@@ -370,15 +380,15 @@ class todo extends CI_Controller
      * 传了week_data参数，是周视图，需要根据日期数计算当天日期
      * 只传了day参数的，是日视图
      */
-    public function  init_day()
+    public function init_day()
     {
         $week_date = $this->input->post('week_date', true);
-        $day = $this->input->post('day', true);
+        $day       = $this->input->post('day', true);
 
         //取初始化当天的时间
         if ($week_date) {
             $time = strtotime($week_date);
-            $day = ($day == 0 ? 7 : $day);
+            $day  = ($day == 0 ? 7 : $day);
 
             $start_time = $time + (($day - 1) * 3600 * 24);
         } else {
@@ -386,16 +396,16 @@ class todo extends CI_Controller
         }
 
         //取初始化当天是星期数，不同的日期，日程可单独配置
-        $w = date('w', $start_time);
+        $w    = date('w', $start_time);
         $jobs = $this->getInitDayJobs($w);
 
         foreach ($jobs as $i => $job) {
             $data = array(
-                'user_id' => $this->uid,
-                'job_name' => $job['job_name'],
+                'user_id'     => $this->uid,
+                'job_name'    => $job['job_name'],
                 'job_type_id' => $job['job_type_id'],
-                'start_time' => $start_time + $i,
-                'time_long' => $job['time_long']
+                'start_time'  => $start_time + $i,
+                'time_long'   => $job['time_long']
             );
 
             $this->db->insert($this->todo_lists, $data);
@@ -444,7 +454,7 @@ class todo extends CI_Controller
         $sql = "SELECT * FROM $this->todo_lists WHERE id= $id";
 
         $query = $this->db->query($sql);
-        $data = $query->result();
+        $data  = $query->result();
 
         return $data[0];
     }
@@ -452,12 +462,12 @@ class todo extends CI_Controller
     private function get_last_done_job($date)
     {
         $day_start = strtotime($date . ' 00:00:00');
-        $day_end = strtotime($date . ' 23:59:59');
+        $day_end   = strtotime($date . ' 23:59:59');
 
-        $sql = "SELECT * FROM $this->todo_lists WHERE start_time >= $day_start AND start_time <= $day_end AND status = 1 "
+        $sql   = "SELECT * FROM $this->todo_lists WHERE start_time >= $day_start AND start_time <= $day_end AND status = 1 "
             . "ORDER BY start_time ASC";
         $query = $this->db->query($sql);
-        $rows = $query->result();
+        $rows  = $query->result();
 
         if (count($rows) > 0) {
             return $rows[count($rows) - 1];
@@ -468,15 +478,15 @@ class todo extends CI_Controller
 
     public function reorder_rest_job_start_time($job_id)
     {
-        $job = $this->get_job_by_id($job_id);
+        $job        = $this->get_job_by_id($job_id);
         $rest_start = $job->start_time + 1;
 
-        $all_jobs = $this->siblings_of_job($job_id);
+        $all_jobs  = $this->siblings_of_job($job_id);
         $do_marker = false;
         foreach ($all_jobs as $row) {
             if ($do_marker) {
                 $option = array(
-                    'id' => $row->id,
+                    'id'         => $row->id,
                     'start_time' => $rest_start
                 );
 
@@ -495,8 +505,8 @@ class todo extends CI_Controller
         $job = $this->get_job_by_id($job_id);
 
         //取任务当天的结束时间
-        $day_str = date('Y-m-d', $job->start_time);
-        $start = strtotime($day_str);
+        $day_str    = date('Y-m-d', $job->start_time);
+        $start      = strtotime($day_str);
         $end_of_day = $start + 3600 * 24 - 1;
 
         $sql = "SELECT * FROM $this->todo_lists WHERE start_time >= $start AND start_time <= $end_of_day"
@@ -529,7 +539,7 @@ class todo extends CI_Controller
             . "ORDER BY start_time DESC";
 
         $query = $this->db->query($sql);
-        $data = $query->result();
+        $data  = $query->result();
 
         if (count($data) === 0) {
             return false;
@@ -546,16 +556,16 @@ class todo extends CI_Controller
 
         if ($date) {
             $start = strtotime($date);
-            $day = (object)array(
+            $day   = (object)array(
                 'start' => $start,
-                'end' => $start + 3600 * 24 - 1
+                'end'   => $start + 3600 * 24 - 1
             );
 
             return $day;
         }
 
         $to_day = substr($this->input->post('to_day', true), 3);
-        $week = $this->f->get_time_range_of_week($this->input->post('week_date', true));
+        $week   = $this->f->get_time_range_of_week($this->input->post('week_date', true));
 
         if ($to_day == 0) {
             $start = $week->start + 6 * (3600 * 24);
@@ -565,7 +575,7 @@ class todo extends CI_Controller
 
         return (object)array(
             'start' => $start,
-            'end' => $start + 3600 * 24 - 1
+            'end'   => $start + 3600 * 24 - 1
         );
     }
 }
