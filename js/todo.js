@@ -344,7 +344,7 @@ function load_todo_list() {
 
             if (bind_event_add) {
                 bind_event_add = false;
-                $(".connectedSortable ").on('dblclick', add_job);
+                $(".connectedSortable ").on('click', add_job);
             }
 
             $('.connectedSortable li').popover({
