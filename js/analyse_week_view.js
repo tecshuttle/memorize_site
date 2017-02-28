@@ -119,18 +119,10 @@ function get_week_time_by_project() {
         },
         dataType: "json",
         success: function (result) {
-            console.log(result);
             var project = [];
-            var code_name = {
-                '': '其它',
-                'car': 'Car2Share',
-                'zz': '种子',
-                'xs': '协顺',
-                'wx': 'zenho微信'
-            };
 
             $.each(result, function (i, p) {
-                var name = (code_name[p.code] === undefined ? p.code : code_name[p.code]);
+                var name = (p.project_name === null ? '其它' : p.project_name);
                 project.push(name + ' ' + p.total / 3600 + '小时');
             });
 

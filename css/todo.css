@@ -4,7 +4,7 @@ body {
     font-size: 12px;
 }
 
-.radio-inline+.radio-inline, .checkbox-inline+.checkbox-inline {
+.radio-inline + .radio-inline, .checkbox-inline + .checkbox-inline {
     margin-left: 0px;
 }
 
@@ -140,4 +140,12 @@ input[type=radio] {
 
 .project_job {
     font-weight: bold;
+}
+
+.project-select {
+    padding: 0px 7px;
+    vertical-align: middle;
+    display: inline-block;
+    width: initial;
+    height: 22px;
 }

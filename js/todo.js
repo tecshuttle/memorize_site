@@ -51,6 +51,7 @@ function add_job(event) {
         type: "POST",
         data: {
             i_day: i_day,
+            project_id: $('#project-select').val(),
             week_date: $('#todo-week').attr('week_date')
         },
         timeout: 3000,
@@ -271,12 +272,13 @@ function load_todo_list() {
 
     var week_date = $('#todo-week').attr('week_date');
 
-    var project_code = $.getUrlParam('project_code');
+    var project_id = $.getUrlParam('project_id');
 
-    if (project_code === null) {
-        project_code = '';
+    if (project_id === null) {
+        project_id = '';
     } else {
         $('#send_report_mail').show();
+        $('#project-select').val(project_id);
     }
 
     $.ajax({
@@ -284,7 +286,7 @@ function load_todo_list() {
         type: "POST",
         data: {
             day: week_date,
-            project_code: project_code
+            project_id: project_id
 
         },
         dataType: "json",
@@ -333,7 +335,7 @@ function load_todo_list() {
 
                 var day_job_time = '<span class="day_job_time">' + (done / 3600).toFixed(1) + '/' + (total / 3600).toFixed(1) + '</span>';
                 $('#day_title' + i).html(day_job_time);
-                if (list === '' && project_code === '') {
+                if (list === '' && project_id === '') {
                     list = '<button class="btn btn-warning btn-xs" onclick="init_day(this, \'' + week_date + '\', ' + i + ');">初始化</button>';
                 }
                 $('#day' + i).html(list);
@@ -420,6 +422,15 @@ $(function () {
             work_type.show();
         } else {
             work_type.hide();
+        }
+    });
+
+    $('#project-select').change(function () {
+        var project_id = $(this).val();
+        if (project_id === '0') {
+            window.location.href = '/';
+        } else {
+            window.location.href = '?project_id=' + project_id;
         }
     });
 });

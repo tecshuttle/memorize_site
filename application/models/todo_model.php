@@ -22,10 +22,10 @@ class todo_model extends CI_Model
         return $data[0]->total_hour;
     }
 
-    function get_project_day_hours($code)
+    function get_project_day_hours($project_id)
     {
         $sql = "SELECT FROM_UNIXTIME( start_time, '%Y-%m-%d' ) AS DATE, SUM( time_long ) /3600 AS HOUR "
-            . "FROM todo_lists WHERE user_id =1 AND job_name LIKE  '$code%' GROUP BY DATE ORDER BY DATE";
+            . "FROM todo_lists WHERE user_id =1 AND project_id = $project_id GROUP BY DATE ORDER BY DATE";
 
         $query = $this->db->query($sql);
         $rows = $query->result();
@@ -56,8 +56,6 @@ class todo_model extends CI_Model
                 $day_time += 3600 * 24;
             }
         }
-        //print_a($rows);
-        //print_a($data);
 
         return $data;
     }

@@ -18,14 +18,23 @@
         <button class="btn btn-default btn-xs" onclick="week_date('next')">下一周</button>
         <span style="margin-left: 6em;"><?= $user_name ?></span>
         <span style="margin-left: 3em;"><a href="/user/logout">Logout</a></span>
-        <span style="float: right;">
-        <a class="btn btn-default btn-xs" target="_blank" href="/analyse">月统计</a>
-        <a class="btn btn-default btn-xs" target="_blank" href="/analyse/week_view">周统计</a>
-        <a class="btn btn-default btn-xs" target="_blank" href="/analyse/work_week_report">工作周报</a>
-        <a class="btn btn-default btn-xs" target="_blank" href="/?project_code=car">Car2Share</a>
-        <a class="btn btn-default btn-xs" target="_blank" href="/analyse/send_report_mail?project_code=car" id="send_report_mail">日报邮件</a>
-        <a class="btn btn-success btn-xs" onclick="export_csv();">导出csv</a>
-        </span>
+
+        <div style="float: right;">
+            <a class="btn btn-default btn-xs" href="/analyse">月统计</a>
+            <a class="btn btn-default btn-xs" href="/analyse/week_view">周统计</a>
+            <a class="btn btn-default btn-xs" href="/analyse/work_week_report">工作周报</a>
+            <select class="form-control project-select" id="project-select">
+                <option value="0">无</option>
+                <?php foreach ($projects as $p): ?>
+                    <option value="<?= $p->id ?>"><?= $p->name ?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php if ($project_id !== false): ?>
+                <a class="btn btn-default btn-xs" href="/analyse/send_report_mail?project_id=<?= $project_id ?>"
+                   id="send_report_mail">周报邮件</a>
+            <?php endif; ?>
+            <a class="btn btn-success btn-xs" onclick="export_csv();">导出csv</a>
+        </div>
     </div>
 
     <div id="day_title1" class="day_title"></div>

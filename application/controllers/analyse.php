@@ -36,13 +36,24 @@ class analyse extends CI_Controller
             array('code' => 'wx', 'name' => '移动互联网')
         );
 
-        if ($_SESSION['uid'] != 1) {
-            $projects = array();
-        }
+        $projects = array();
 
-        foreach ($projects as &$p) {
-            $p['total_hours'] = number_format($this->todo_model->get_project_total_hour($p['code']), 2);
-            $p['day_hours'] = $this->todo_model->get_project_day_hours($p['code']);
+        if ($_SESSION['uid'] == 1) {
+            $sql = "SELECT p.id, p.name, sum(t.time_long) as total "
+                . "FROM todo_projects AS p LEFT JOIN todo_lists AS t ON (p.id = t.project_id)"
+                . "WHERE t.user_id = $this->uid "
+
+                . "GROUP BY p.id ORDER BY total DESC";
+
+            $project_rows = $this->db->query($sql)->result();
+
+            foreach ($project_rows as $row) {
+                $projects[] = [
+                    'project_id'  => $row->id,
+                    'name'        => $row->name,
+                    'total_hours' => number_format($row->total / 3600, 2)
+                ];
+            }
         }
 
         //取当月每日记录图表数据
@@ -56,7 +67,7 @@ class analyse extends CI_Controller
         }
 
         $month_start = $month . '-01 00:00:00';
-        $now = strtotime($month_start);
+        $now         = strtotime($month_start);
 
         $m = date('m', $now);
         if ($m == 12) {
@@ -76,25 +87,23 @@ class analyse extends CI_Controller
             }
 
             array_push($md, array(
-                'name' => $job_type_name,
+                'name'          => $job_type_name,
                 'pointInterval' => 3600 * 1000 * 24, //1天
-                'pointStart' => 1, //'Date.UTC(2014, 10, 1, 0, 0)',  //UTC(年，月，日，时，分)
-                'data' => $month_data
+                'pointStart'    => 1, //'Date.UTC(2014, 10, 1, 0, 0)',  //UTC(年，月，日，时，分)
+                'data'          => $month_data
             ));
         }
-
-        //print_a($md);
 
         $month_json_data = json_encode($md); //'[' . implode(',', $month_data) . ']';
 
         $data = array(
-            'title' => 'todo分析',
-            'user_name' => $_SESSION['user_name'],
-            'projects' => $projects,
-            'month' => $month,
+            'title'            => 'todo分析',
+            'user_name'        => $_SESSION['user_name'],
+            'projects'         => $projects,
+            'month'            => $month,
             'month_chart_data' => $month_json_data,
-            'css' => array(),
-            'js' => array(
+            'css'              => array(),
+            'js'               => array(
                 '/js/analyse.js'
             )
         );
@@ -105,10 +114,10 @@ class analyse extends CI_Controller
     public function week_view()
     {
         $data = array(
-            'title' => 'Analyse week view',
+            'title'     => 'Analyse week view',
             'user_name' => $_SESSION['user_name'],
-            'css' => array(),
-            'js' => array(
+            'css'       => array(),
+            'js'        => array(
                 '/js/analyse_week_view.js'
             )
         );
@@ -119,10 +128,10 @@ class analyse extends CI_Controller
     public function work_pie()
     {
         $data = array(
-            'title' => 'Analyse work pie',
+            'title'     => 'Analyse work pie',
             'user_name' => $_SESSION['user_name'],
-            'css' => array(),
-            'js' => array(
+            'css'       => array(),
+            'js'        => array(
                 '/js/analyse_work_pie.js'
             )
         );
@@ -133,10 +142,10 @@ class analyse extends CI_Controller
     public function work_week_report()
     {
         $data = array(
-            'title' => 'Report of Work in Week',
+            'title'     => 'Report of Work in Week',
             'user_name' => $_SESSION['user_name'],
-            'css' => array(),
-            'js' => array(
+            'css'       => array(),
+            'js'        => array(
                 '/js/todo/work_week_report.js'
             )
         );
@@ -146,14 +155,14 @@ class analyse extends CI_Controller
 
     public function get_week_time_by_project()
     {
-        $week_date = $this->input->post('week_date', true);
+        $week_date  = $this->input->post('week_date', true);
         $week_range = $this->f->get_time_range_of_week($week_date);
 
-        $sql = "SELECT LEFT(job_name, POSITION(':' IN job_name) - 1) AS code, SUM(time_long) AS total "
-            . ", IF(POSITION(':' IN job_name) > 0 , 1, 0) as is_code "
-            . "FROM todo_lists "
-            . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) "
-            . "GROUP BY code ORDER BY is_code DESC, total DESC";
+        $sql = "SELECT p.id as project_id, p.name AS project_name, SUM(t.time_long) AS total "
+            . "FROM todo_lists AS t left join todo_projects AS p ON (t.project_id = p.id)"
+            . "WHERE t.user_id = $this->uid AND t.job_type_id = 3 "
+            . "AND (start_time >= $week_range->start AND start_time <= $week_range->end) "
+            . "GROUP BY project_id ORDER BY project_id DESC, total DESC";
 
         $query = $this->db->query($sql);
 
@@ -165,15 +174,16 @@ class analyse extends CI_Controller
 
     public function send_report_mail()
     {
-        $day = date('Y-m-d', time());
-        $project_code = $this->input->get('project_code', true);
+        $day        = date('Y-m-d', time());
+        $project_id = $this->input->get('project_id', true);
 
         $data = array(
-            'title' => 'Report of Work in Week',
-            'user_name' => $_SESSION['user_name'],
-            'day_report' => $this->get_day_report($day, $project_code),
-            'css' => array(),
-            'js' => array(
+            'title'      => 'Report of Work in Week',
+            'user_name'  => $_SESSION['user_name'],
+            'project_id' => $project_id,
+            'day_report' => $this->get_day_report($day, $project_id),
+            'css'        => array(),
+            'js'         => array(
                 '/js/todo/day_report.js'
             )
         );
@@ -183,18 +193,18 @@ class analyse extends CI_Controller
 
     public function send_report_mail_api()
     {
-        $day = $this->input->post('day', true);
-        $project_code = $this->input->post('code', true);
+        $day        = $this->input->post('day', true);
+        $project_id = $this->input->post('project_id', true);
 
         echo json_encode(array(
             'success' => true,
-            'report' => $this->get_day_report($day, $project_code)
+            'report'  => $this->get_day_report($day, $project_id)
         ));
     }
 
-    private function get_day_report($day, $project_code)
+    private function get_day_report($day, $project_id)
     {
-        $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, false, $project_code, $this->uid);
+        $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, false, $project_id, $this->uid);
 
         //把任务按日期分组
         $list = $this->todo_lib->gather_jobs_by_day($all_jobs_of_week);
@@ -209,7 +219,7 @@ class analyse extends CI_Controller
 
         //给每天加上日期
         $time_range = $this->f->get_time_range_of_week($day);
-        $start = $time_range->start;
+        $start      = $time_range->start;
 
         foreach ($ol as &$day) {
             $day['date'] = date('Y-m-d', $start);
@@ -218,13 +228,11 @@ class analyse extends CI_Controller
 
         $data = array(
             'days' => $ol,
-            'css' => array(),
-            'js' => array()
+            'css'  => array(),
+            'js'   => array()
         );
 
-
         return $this->load->view('todo/report_mail', $data, true);
-
     }
 
 
@@ -239,23 +247,17 @@ class analyse extends CI_Controller
         $this->f->send_mail('tom@zenho.co.uk', $subject, $content);
     }
 
-    public function get_work_week_report_jobs_by_code()
+    public function get_work_week_report_jobs_by_project_id()
     {
-        $code = $this->input->post('code', true);
+        $project_id = $this->input->post('project_id', true);
 
-        $week_date = $this->input->post('week_date', true);
+        $week_date  = $this->input->post('week_date', true);
         $week_range = $this->f->get_time_range_of_week($week_date);
 
-        $sql = "SELECT SUBSTRING(job_name, POSITION(':' IN job_name) + " . ($code === '' ? 1 : 2) . ") AS name FROM todo_lists "
-            . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) ";
-
-        if ($code === '') {
-            $sql .= "AND job_name NOT LIKE '%:%'";
-        } else {
-            $sql .= "AND job_name LIKE '$code%'";
-        }
-
-        $sql .= ' ORDER BY start_time ASC';
+        $sql = "SELECT job_name AS name FROM todo_lists "
+            . "WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $week_range->start AND start_time <= $week_range->end) "
+            . "AND project_id = {$project_id}"
+            . ' ORDER BY start_time ASC';
 
         //echo $sql; exit;
 
@@ -269,10 +271,10 @@ class analyse extends CI_Controller
     public function get_work_pie()
     {
         $start = strtotime('2015-01-01');
-        $end = strtotime('2015-12-31');
+        $end   = strtotime('2015-12-31');
 
         //工作类型
-        $sql = $sql = "SELECT task_type_id, SUM(time_long) AS time_long FROM $this->todo_lists "
+        $sql   = $sql = "SELECT task_type_id, SUM(time_long) AS time_long FROM $this->todo_lists "
             . " WHERE user_id = $this->uid AND job_type_id = 3 AND (start_time >= $start AND start_time <= $end)"
             . " GROUP BY task_type_id ORDER BY task_type_id";
         $query = $this->db->query($sql);
@@ -292,14 +294,14 @@ class analyse extends CI_Controller
 
         echo json_encode(array(
             'work_type' => $work_type,
-            'projects' => $projects,
+            'projects'  => $projects,
         ));
     }
 
     public function getPieDataOfTaskType()
     {
         $week_date = $this->input->post('week_date', true);
-        $i_day = $this->input->post('i_day', true);
+        $i_day     = $this->input->post('i_day', true);
         $work_type = 3;
 
         //找出$i_day对应的日期时间，开始和结束
@@ -307,13 +309,13 @@ class analyse extends CI_Controller
 
         if ($i_day == 'week') {
             $start = $week_range->start;
-            $end = $week_range->end;
+            $end   = $week_range->end;
         } else {
             $i_day_array = explode('_', $i_day);
-            $i = $i_day_array[1];
+            $i           = $i_day_array[1];
 
             $start = $week_range->start + ($i - 1) * 3600 * 24;
-            $end = $start + 3600 * 24 - 1;
+            $end   = $start + 3600 * 24 - 1;
         }
 
 
@@ -338,19 +340,19 @@ class analyse extends CI_Controller
 
         echo json_encode(array(
             'success' => true,
-            'data' => $data
+            'data'    => $data
         ));
     }
 
     public function export_project_task_list()
     {
-        $code = $this->input->get('code', true);
+        $project_id = $this->input->get('project_id', true);
 
         $sql = "SELECT * FROM $this->todo_lists "
-            . "WHERE user_id = $this->uid AND job_name LIKE '$code%' ORDER BY start_time ASC";
+            . "WHERE user_id = $this->uid AND project_id = {$project_id} ORDER BY start_time ASC";
 
         $query = $this->db->query($sql);
-        $data = $query->result();
+        $data  = $query->result();
 
         $str = "日期,任务,耗时（分钟）\n";
         $str = iconv('utf-8', 'gb2312', $str);
@@ -361,7 +363,7 @@ class analyse extends CI_Controller
             $str .= $date . "," . $name . "," . $row->time_long / 60 . "\n"; //用引文逗号分开
         }
 
-        $filename = 'project_' . $code . '_' . date('Ymd') . '.csv'; //设置文件名
+        $filename = 'project_' . $project_id . '_' . date('Ymd') . '.csv'; //设置文件名
 
         header("Content-type:text/csv");
         header("Content-Disposition:attachment;filename=" . $filename);

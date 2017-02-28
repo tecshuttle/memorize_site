@@ -83,17 +83,17 @@ $(function () {
 
 function show_project_title(projects) {
     var html = '';
-    var code_name = {
-        '': '其它',
-        'car': 'Car2Share',
-        'zz': '种子',
-        'xs': '协顺',
-        'wx': 'zenho微信'
-    };
 
     $.each(projects, function (i, p) {
-        var name = (code_name[p.code] === undefined ? p.code : code_name[p.code]);
-        html += '<div class="project-item"><h4 class="project_title" code="' + p.code + '">' + name + ' ' + p.total / 3600 + '小时' + '</h4></div>';
+
+        if (p.project_id === null) {
+            p.project_id = 0;
+            p.project_name = '其它';
+        }
+
+        html += '<div class="project-item">'
+            + '<h4 class="project_title" project_id="' + p.project_id + '">' + p.project_name + ' ' + p.total / 3600 + '小时' + '</h4>'
+            + '</div>';
     });
 
     $('#time_by_project').html(html);
@@ -103,14 +103,14 @@ function show_project_jobs() {
     var project_title = $('h4.project_title');
 
     $.each(project_title, function (i, p) {
-        var code = $(p).attr('code');
+        var project_id = $(p).attr('project_id');
 
         $.ajax({
-            url: "/analyse/get_work_week_report_jobs_by_code",
+            url: "/analyse/get_work_week_report_jobs_by_project_id",
             type: "POST",
             data: {
                 week_date: url_day,
-                code: code
+                project_id: project_id
             },
             dataType: "json",
             success: function (result) {

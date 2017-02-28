@@ -17,7 +17,7 @@
         <span style="margin-left: 6em;"><?= $user_name ?></span>
         <span style="margin-left: 3em;"><a href="/user/logout">Logout</a></span>
         <span style="float: right;">
-        <a class="btn btn-default btn-xs" target="_blank" href="/">周视图</a>
+        <a class="btn btn-default btn-xs" href="/">周视图</a>
         </span>
     </div>
 
@@ -26,20 +26,20 @@
     <div style="margin: 1em;">
         <?php foreach ($projects as $item): ?>
             <p>
-                <span style="display: inline-block; width:8em;"><?= $item['name'] ?></span>
+                <span style="display: inline-block; width:12em;"><?= $item['name'] ?></span>
                 <span style="display: inline-block; width:6em;text-align: right;margin-right:2em;">
                     <?= $item['total_hours'] ?>小时
                 </span>
 
-                <button onclick="project_chart('<?= $item['code'] ?>', '<?= $item['name'] ?>');" class="btn btn-default btn-xs">
+                <button onclick="project_chart('<?= $item['project_id'] ?>', '<?= $item['name'] ?>');" class="btn btn-default btn-xs">
                     图表
                 </button>
 
-                <a href="/analyse/export_project_task_list?code=<?= $item['code'] ?>" style="margin-left:2em;">
+                <a href="/analyse/export_project_task_list?project_id=<?= $item['project_id'] ?>" style="margin-left:2em;">
                     任务清单CSV
                 </a>
             </p>
-            <div id="<?= $item['code'] ?>_chart" style="display:none;"></div>
+            <div id="<?= $item['project_id'] ?>_chart" style="display:none;"></div>
         <?php endforeach; ?>
     </div>
 </div>

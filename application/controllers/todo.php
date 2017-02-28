@@ -27,12 +27,13 @@ class todo extends CI_Controller
         }
 
         $data = array(
-            'menu'      => 'about_us',
-            'work_type' => $this->get_work_type(),
-            'user_name' => $_SESSION['user_name'],
-            'projects'  => $this->get_projects(),
-            'css'       => array(),
-            'js'        => array(
+            'menu'       => 'about_us',
+            'work_type'  => $this->get_work_type(),
+            'user_name'  => $_SESSION['user_name'],
+            'projects'   => $this->get_projects(),
+            'project_id' => $this->input->get('project_id', true),
+            'css'        => array(),
+            'js'         => array(
                 '/assets/js/scroll.js'
             )
         );
@@ -124,12 +125,11 @@ class todo extends CI_Controller
 
     public function get_jobs_of_week()
     {
+        $day         = $this->input->post('day', true);
+        $job_type_id = $this->input->post('job_type_id', true);
+        $project_id  = $this->input->post('project_id', true);
 
-        $day          = $this->input->post('day', true);
-        $job_type_id  = $this->input->post('job_type_id', true);
-        $project_code = $this->input->post('project_code', true);
-
-        $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, $job_type_id, $project_code, $this->uid);
+        $all_jobs_of_week = $this->todo_lib->get_all_jobs_of_week($day, $job_type_id, $project_id, $this->uid);
 
         //把任务按日期分组
         $list = $this->todo_lib->gather_jobs_by_day($all_jobs_of_week);
@@ -160,8 +160,9 @@ class todo extends CI_Controller
     public function add_job()
     {
         //取得任务当天的开始时间
-        $week  = $this->f->get_time_range_of_week($this->input->post('week_date', true));
-        $i_day = $this->input->post('i_day', true);
+        $week       = $this->f->get_time_range_of_week($this->input->post('week_date', true));
+        $i_day      = $this->input->post('i_day', true);
+        $project_id = $this->input->post('project_id', true);
 
         if ($i_day == 0) {
             $start_time = $week->start + 6 * (3600 * 24);
@@ -178,6 +179,7 @@ class todo extends CI_Controller
         $data = array(
             'user_id'    => $this->uid,
             'job_name'   => '#',
+            'project_id' => $project_id,
             'start_time' => $start_time,
             'time_long'  => 60 * 60 //任务耗时默认1小时
         );
