@@ -316,15 +316,13 @@ function load_todo_list() {
                         is_done = ' done_job ';
                     }
 
-                    list += '<li class="' + is_done + '" rec_id="' + a.id + '" ' + popover + '>';
-
-                    var job_text = a.job_name + (a.job_desc === '' ? '' : '...');
-
-                    if (a.project_id === '0') {
-                        list += job_text;
-                    } else {
-                        list += '<b>' + job_text + '</b>';
+                    var is_bold = '';
+                    if (a.project_id !== '0') {
+                        is_bold = ' project_job ';
                     }
+
+                    list += '<li class="' + is_bold + is_done + '" rec_id="' + a.id + '" ' + popover + '>';
+                    list += a.job_name + (a.job_desc === '' ? '' : '...');
 
                     var color_set = ['#dddddd', '#7cb5ec', '#90ed7d', '#f7a35c', '#058DC7', '#50B432', '#ED561B', '#DDDF00'];
                     var badge_color = ' style="background-color: ' + color_set[a.job_type_id] + ';" ';
