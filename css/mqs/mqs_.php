@@ -4,9 +4,9 @@ require_once(dirname(__FILE__) . "/mqs.class.php");
 
 //echo dirname(__FILE__)."/mqs.class.php";exit;
 
-$Accessid = 'ga717WxlLMfcBezG';
-$AccessKey = 'HyYsmhnb4D2xjS1qQSlOdZn2XVrZq1';
-$queueownerid = 'hyoc74x7nw';
+$Accessid = '';
+$AccessKey = '';
+$queueownerid = '';
 $mqsurl = 'http://hyoc74x7nw.mqs-cn-hangzhou.aliyuncs.com/sendMail'; //杭州的地址
 
 
